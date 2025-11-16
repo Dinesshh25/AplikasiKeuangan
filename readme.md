@@ -1,10 +1,11 @@
-Aplikasi Keuangan Mahasiswa (Student Budget Tracker)
+# Aplikasi Keuangan Mahasiswa  
 
-Aplikasi ini merupakan proyek C Modular untuk mata kuliah Dasar-Dasar Pemrograman berdasarkan kasus “Aplikasi Keuangan Mahasiswa”. Program dirancang untuk membantu mahasiswa melacak pemasukan, pengeluaran, pos anggaran, dan memberikan analisis otomatis terhadap kondisi keuangan.
+Aplikasi ini adalah proyek **C modular** untuk mata kuliah *Dasar-Dasar Pemrograman*, berdasarkan kasus “Aplikasi Keuangan Mahasiswa”.  
+Program berfungsi sebagai pelacak keuangan pribadi dengan fitur pencatatan pos anggaran, transaksi, penyimpanan data, dan analisis keuangan.
 
 -----------------------
 
-Struktur File Program
+### Struktur File Program
 Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab tersendiri.
 1. modul.h (Header / Kamus Program)
     Berfungsi sebagai pusat definisi dan prototipe fungsi.
