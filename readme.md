@@ -8,13 +8,13 @@ Program berfungsi sebagai pelacak keuangan pribadi dengan fitur pencatatan pos a
 ### Struktur File Program
 Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab tersendiri.
 1. modul.h (Header / Kamus Program)
-    Berfungsi sebagai pusat definisi dan prototipe fungsi.
+   Berfungsi sebagai pusat definisi dan prototipe fungsi.
     Berisi:
     - #include library standar (stdio.h, string.h, dll.)
     - Definisi struct PosAnggaran dan struct Transaksi
     - Prototipe dari seluruh fungsi dan prosedur dalam proyek
 2. main.c (Controller / Program Utama)
-    Mengatur alur utama program dan memanggil fungsi dari modul lain.
+   Mengatur alur utama program dan memanggil fungsi dari modul lain.
     Berisi:
     - #include "modul.h"
     - Deklarasi array data pos dan transaksi
@@ -22,7 +22,7 @@ Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab terse
     - Loop menu utama menggunakan do-while
     - Struktur switch-case untuk memanggil modul logika
 3. modul_tampilan.c (View)
-    Berisi seluruh prosedur untuk menampilkan data ke layar.
+   Berisi seluruh prosedur untuk menampilkan data ke layar.
     Berisi:
     - tampilMenu()
     - tampilSubMenuTransaksi()
@@ -31,7 +31,7 @@ Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab terse
     - tampilRekapitulasi()
     - tampilDaftarTransaksi()
 4. modul_logika.c (Logic & Validation)
-    Mengatur alur kerja, validasi input, dan fungsi pendukung lainnya.
+   Mengatur alur kerja, validasi input, dan fungsi pendukung lainnya.
     Berisi:
     - pilihMenu()
     - kelolaTambahPos()
