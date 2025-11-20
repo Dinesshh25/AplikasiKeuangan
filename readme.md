@@ -7,22 +7,13 @@ Program berfungsi sebagai pelacak keuangan pribadi dengan fitur pencatatan pos a
 
 ### Struktur File Program
 Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab tersendiri.
-1. modul.h (Header / Kamus Program)
-    Berfungsi sebagai pusat definisi dan prototipe fungsi.
+1. main.c (Controller / Program Utama)
+    Mengatur alur utama program, ada header modul, memanggil body modul, pilhMenu.
     Berisi:
-    - #include library standar (stdio.h, string.h, dll.)
-    - Definisi struct PosAnggaran dan struct Transaksi
-    - Prototipe dari seluruh fungsi dan prosedur dalam proyek
-2. main.c (Controller / Program Utama)
-    Mengatur alur utama program dan memanggil fungsi dari modul lain.
-    Berisi:
-    - #include "modul.h"
     - Deklarasi array data pos dan transaksi
-    - Pemanggilan loadDataPos() dan loadDataTransaksi()
     - Loop menu utama menggunakan do-while
-    - Struktur switch-case untuk memanggil modul logika
-3. modul_tampilan.c (View)
-    Berisi seluruh prosedur untuk menampilkan data ke layar.
+2. body_modul_tampilan.c 
+    Berisi seluruh modul untuk menampilkan.
     Berisi:
     - tampilMenu()
     - tampilSubMenuTransaksi()
@@ -30,8 +21,8 @@ Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab terse
     - tampilLaporanPos()
     - tampilRekapitulasi()
     - tampilDaftarTransaksi()
-4. modul_logika.c (Logic & Validation)
-    Mengatur alur kerja, validasi input, dan fungsi pendukung lainnya.
+3. body_modul_pos.c
+    Berisi seluruh modul untuk pos.
     Berisi:
     - pilihMenu()
     - kelolaTambahPos()
@@ -39,8 +30,8 @@ Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab terse
     - validasiPosDuplikat()
     - validasiTransaksi()
     - generateId()
-5. modul_kalkulasi.c (Calculation)
-    Berisi fungsi perhitungan murni tanpa melakukan input/output.
+4. body_modul_transaksi.c
+    Berisi seluruh modul untuk transaksi.
     Berisi:
     - hitungTotalPemasukan()
     - hitungTotalPengeluaran()
@@ -50,8 +41,8 @@ Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab terse
     - kesimpulanKeuangan()
     - avgPengeluaran()
     - hitungJumlahTransaksi()
-6. modul_file.c (File I/O)
-    Mengatur penyimpanan dan pembacaan data dari file .txt.
+5. body_modul_laporan.c
+    Berisi seluruh modul untuk laporan keuangan.
     Berisi:
     - loadDataPos()
     - appendDataPos()
