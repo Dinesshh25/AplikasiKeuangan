@@ -24,29 +24,28 @@ Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab terse
 3. body_modul_pos.c
     Berisi seluruh modul untuk pos.
     Berisi:
-    - pilihMenu()
-    - kelolaTambahPos()
-    - kelolaTambahTransaksi()
+    - loadDataPos()
+    - appendDataPos()
     - validasiPosDuplikat()
-    - validasiTransaksi()
-    - generateId()
+    - tambahPos()
 4. body_modul_transaksi.c
     Berisi seluruh modul untuk transaksi.
+    Berisi:
+    - loadDataTransaksi()
+    - appendDataTransaksi()
+    - generateId()
+    - validasiTransaksi()
+    - tambahTransaksi()
+5. body_modul_laporan.c
+    Berisi seluruh modul untuk laporan keuangan.
     Berisi:
     - hitungTotalPemasukan()
     - hitungTotalPengeluaran()
     - hitungSaldoAkhir()
-    - hitungRealisasi()
+    - avgPengeluaran()
     - kondisiKeuangan()
     - kesimpulanKeuangan()
-    - avgPengeluaran()
+    - hitungRealisasi()
     - hitungJumlahTransaksi()
-5. body_modul_laporan.c
-    Berisi seluruh modul untuk laporan keuangan.
-    Berisi:
-    - loadDataPos()
-    - appendDataPos()
-    - loadDataTransaksi()
-    - appendDataTransaksi()
 
 -------------------------
