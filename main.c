@@ -3,7 +3,7 @@
 #include <string.h>
 
 /*
-    Strukture Data Aplikasi Keuangan Mahasiswa
+    Struktur Data Aplikasi Keuangan Mahasiswa
     PosAnggaran: Menyimpan informasi tentang pos anggaran seperti nama pos dan batas nominal.
     Transaksi: Menyimpan informasi tentang transaksi keuangan termasuk pemasukan dan pengeluaran seperti ID, tanggal, pos anggaran, nominal, jenis, dan deskripsi.
 */
@@ -64,7 +64,7 @@ void loadDataTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi);
     F. S. : dataTransaksi terisi, jumlahTransaksi diperbarui.
 */
 
-void appendDataTransaksi(Transaksi txBaru);
+void appendDataTransaksi(Transaksi transaksiBaru);
 /*
     Procedure bertujuan untuk menambahkan data transaksi baru ke dalam file data_transaksi.
     I. S. : Data transaksi baru telah divalidasi dan siap untuk disimpan, file data_transaksi memiliki N baris.
@@ -78,26 +78,26 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
     F. S. : dataTransaksi dan jumlahTransaksi bertambah 1 jika data valid dan data ditambahkan ke dalam file data_transaksi.
 */
 
-int validasiTransaksi(Transaksi txBaru, PosAnggaran dataPos[], int jumlahPos);
+int validasiTransaksi(Transaksi transaksiBaru, PosAnggaran dataPos[], int jumlahPos);
 /*
     Function bertujuan untuk memvalidasi data transaksi yang akan ditambahkan.
-    Input : Data transaksi baru (txBaru), data pos anggaran (dataPos), jumlah pos anggaran (jumlahPos)
+    Input : Data transaksi baru (transaksiBaru), data pos anggaran (dataPos), jumlah pos anggaran (jumlahPos)
     Output : Mengembalikan 1 dan data ditambahkan ke dalam file data_transaksi jika data valid (hanya pemasukan/pengeluaran, nominal > 0, tanggal tidak kosong, pos anggaran berasal dari dataPos)
             Mengembalikan 0 dan menampilkan pesan kesalahan jika tidak valid.
 */
 
-int generateId(int jumlahTransaksi);
+void generateId(int jumlahTransaksi, char *bufferId);
 /*
-    Function bertujuan untuk menghasilkan ID unik untuk transaksi baru berdasarkan jumlah transaksi yang sudah ada.
-    Input : jumlahTransaksi (jumlah transaksi yang sudah ada)
-    Output : Mengembalikan ID unik dalam format "TX0001", "TX0002", dst.
+    Procedure bertujuan untuk menghasilkan ID unik untuk setiap transaksi berdasarkan jumlah transaksi yang ada.
+    Input : jumlahTransaksi (jumlah transaksi yang ada)
+    Output : bufferId (ID unik yang dihasilkan disimpan dalam bufferId)
 */
 
-int hitungJumlahTransaksi(char namaPos[], Transaksi dataTransaksi[], int jumlahTransaksi);
+int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi);
 /*
-    Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos dan jenis pemasukan atau pengeluaran.
-    Input : namaPos (nama pos anggaran), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
-    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos dan jenisnya.
+    Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos atau jenis pemasukan/pengeluaran.
+    Input : kriteria (nama pos anggaran atau jenis transaksi), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
+    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.
 */
 
 void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char filter[]);
@@ -127,7 +127,7 @@ int hitungTotalPengeluaran(Transaksi dataTransaksi[], int jumlahTransaksi);
 
 
 
-float main() {
+int main() {
     /* Deklarasi Variabel */
     Transaksi dataTransaksi[100];
     PosAnggaran dataPos[50];
@@ -156,7 +156,7 @@ float main() {
                 tambahTransaksi(dataTransaksi, &jumlahTransaksi, dataPos, jumlahPos); //menambah transaksi
                 break;
             case 3:
-                tampilLaporan(dataTransaksi, jumlahTransaksi); //menampilkan laporan keuangan
+                tampilLaporanKeuangan(dataTransaksi, jumlahTransaksi); //menampilkan laporan keuangan
                 break;
             case 0:
                 printf("Terima kasih telah menggunakan Aplikasi Keuangan. Sampai jumpa!\n"); //keluar dari aplikasi
