@@ -1,11 +1,6 @@
-//pemanggilan body modul
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "body_modul_pos.c"
-#include "body_modul_transaksi.c"
-#include "body_modul_laporan.c"
-#include "body_modul_tampilan.c"
 
 /*
     Strukture Data Aplikasi Keuangan Mahasiswa
@@ -26,6 +21,16 @@ typedef struct {
     char deskripsi[100];
 } Transaksi;
 
+
+/*
+    Include Body Modul
+*/
+#include "body_modul_pos.c"
+#include "body_modul_transaksi.c"
+#include "body_modul_laporan.c"
+#include "body_modul_tampilan.c"
+
+
 /*
     Header Modul
 */
@@ -37,11 +42,11 @@ void tampilMenu();
             (1. tambah pos, 2. tambah transaksi, 3. laporan, 0. keluar)  
 */
 
-void pilihMenu();
+int pilihMenu();
 /*
-    Procedure bertujuan untuk memproses pilihan (meminta dan membaca) menu yang dipilih oleh pengguna.
-    I. S. : Menu utama ditampilkan
-    F. S. : Proses sesuai dengan pilihan menu yang dipilih oleh pengguna dijalankan.
+    Function bertujuan untuk menerima input pilihan menu dari pengguna.
+    Input : Pilihan menu dari pengguna
+    Output : Mengembalikan pilihan menu sebagai integer
 */
 
 void tampilSubMenuTransaksi();
@@ -76,23 +81,23 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
 int validasiTransaksi(Transaksi txBaru, PosAnggaran dataPos[], int jumlahPos);
 /*
     Function bertujuan untuk memvalidasi data transaksi yang akan ditambahkan.
-    I. S. : Data transaksi baru telah diinput oleh pengguna
-    F. S. : Mengembalikan 1 dan data ditambahkan ke dalam file data_transaksi jika data valid (hanya pemasukan/pengeluaran, nominal > 0, tanggal tidak kosong, pos anggaran berasal dari dataPos)
+    Input : Data transaksi baru (txBaru), data pos anggaran (dataPos), jumlah pos anggaran (jumlahPos)
+    Output : Mengembalikan 1 dan data ditambahkan ke dalam file data_transaksi jika data valid (hanya pemasukan/pengeluaran, nominal > 0, tanggal tidak kosong, pos anggaran berasal dari dataPos)
             Mengembalikan 0 dan menampilkan pesan kesalahan jika tidak valid.
 */
 
 int generateId(int jumlahTransaksi);
 /*
     Function bertujuan untuk menghasilkan ID unik untuk transaksi baru berdasarkan jumlah transaksi yang sudah ada.
-    I. S. : Jumlah transaksi sudah diketahui
-    F. S. : Mengembalikan ID unik dalam format "TXXX" di mana XXX adalah nomor urut transaksi dengan padding nol di depan.
+    Input : jumlahTransaksi (jumlah transaksi yang sudah ada)
+    Output : Mengembalikan ID unik dalam format "TX0001", "TX0002", dst.
 */
 
 int hitungJumlahTransaksi(char namaPos[], Transaksi dataTransaksi[], int jumlahTransaksi);
 /*
-    Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi).
-    I. S. : Data transaksi sudah ada
-    F. S. : Mengembalikan jumlah transaksi.
+    Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos dan jenis pemasukan atau pengeluaran.
+    Input : namaPos (nama pos anggaran), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
+    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos dan jenisnya.
 */
 
 void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char filter[]);
@@ -108,26 +113,70 @@ void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char 
 int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi);
 /*
     Function bertujuan untuk menghitung total pemasukan dari semua transaksi yang ada.
-    I. S. : Data transaksi sudah ada
-    F. S. : Mengembalikan total pemasukan dari semua transaksi.
+    Input : Data transaksi sudah ada
+    Output : Mengembalikan total pemasukan dari semua transaksi.
 */
 
 int hitungTotalPengeluaran(Transaksi dataTransaksi[], int jumlahTransaksi);
 /*
     Function bertujuan untuk menghitung total pengeluaran dari semua transaksi yang ada.
-    I. S. : Data transaksi sudah ada
-    F. S. : Mengembalikan total pengeluaran dari semua transaksi.
+    Input : Data transaksi sudah ada
+    Output : Mengembalikan total pengeluaran dari semua transaksi.
 */
 
 
 
 
 float main() {
-    //Deklarasi Variabel
+    /* Deklarasi Variabel */
+    Transaksi dataTransaksi[100];
+    PosAnggaran dataPos[50];
+    int jumlahTransaksi = 0;
+    int jumlahPos = 0;
+    int pilihanMenu;
 
-    //Deskripsi Program
+    /* Deskripsi Program */
     printf("Selamat datang di Aplikasi Keuangan\n");
+
+    loadDataTransaksi(dataTransaksi, &jumlahTransaksi); //memuat data transaksi dari file
+    loadDataPos(dataPos, &jumlahPos); //memuat data pos anggaran dari file
+
+    //looping menu utama
+    do
+    {
+        tampilMenu(); //menampilkan menu utama
+        pilihanMenu = pilihMenu(); //memilih menu utama
+
+        //menjalankan menu utama, memutuskan fungsi berdasarkan pilihan menu
+        switch (pilihanMenu){
+            case 1:
+                tambahPos(dataPos, &jumlahPos); //menambah pos anggaran
+                break;
+            case 2:
+                tambahTransaksi(dataTransaksi, &jumlahTransaksi, dataPos, jumlahPos); //menambah transaksi
+                break;
+            case 3:
+                tampilLaporan(dataTransaksi, jumlahTransaksi); //menampilkan laporan keuangan
+                break;
+            case 0:
+                printf("Terima kasih telah menggunakan Aplikasi Keuangan. Sampai jumpa!\n"); //keluar dari aplikasi
+                break;
+            default:
+                printf("Pilihan tidak valid. Silakan coba lagi.\n"); //menangani pilihan tidak valid
+                break;
+        }
+    } while (pilihanMenu != 0); //mengulangi sampai pengguna memilih untuk keluar
+    
     return 0;
 }
 
-//pilihmenu
+// Implementasi Modul pilihMenu (body modul pilihMenu)
+int pilihMenu(){
+    /* Deklarasi Variabel */
+    int pilihanMenu;
+    
+    /* Deskripsi Program */
+    printf("Masukkan pilihan (1/2/3/0): ");
+    scanf("%d", &pilihanMenu);
+    return pilihanMenu;
+}
