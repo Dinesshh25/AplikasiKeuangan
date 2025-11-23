@@ -2,7 +2,7 @@ int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi){
 
 }
 
-int hitungTotalPengeluaran(Transaksi dataTransaksi[], int jumlahTransaksi){
+int hitungTotal(Transaksi dataTransaksi[], int jumlahTransaksi){
 
 }
 
