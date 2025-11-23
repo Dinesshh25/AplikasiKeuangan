@@ -100,16 +100,6 @@ int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlah
     Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.
 */
 
-void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char filter[]);
-/*
-    Procedure bertujuan untuk menampilkan daftar transaksi ke layar dengan opsi filter.
-    I. S. : Data transaksi sudah ada
-    F. S. : Daftar transaksi ditampilkan ke layar sesuai dengan filter yang diberikan.
-            Jika filter "semua", tampilkan semua transaksi.
-            Jika filter "pemasukan", tampilkan hanya transaksi pemasukan.
-            Jika filter "pengeluaran", tampilkan hanya transaksi pengeluaran.
-*/
-
 int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi);
 /*
     Function bertujuan untuk menghitung total pemasukan dari semua transaksi yang ada.
@@ -124,6 +114,29 @@ int hitungTotalPengeluaran(Transaksi dataTransaksi[], int jumlahTransaksi);
     Output : Mengembalikan total pengeluaran dari semua transaksi.
 */
 
+int hitungSaldoAKhir(int totalPemasukan, int totalPengeluaran);
+/*
+    Function bertujuan untuk menghitung saldo akhir berdasarkan total pemasukan dan total pengeluaran.
+    Input : totalPemasukan, totalPengeluaran
+    Output : Mengembalikan saldo akhir (totalPemasukan - totalPengeluaran).
+*/
+
+int avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi);
+/*
+    Function bertujuan untuk menghitung rata-rata pengeluaran dari semua transaksi pengeluaran yang ada.
+    Input : totalPengeluaran, dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
+    Output : Mengembalikan rata-rata pengeluaran.
+*/
+
+void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char filter[]);
+/*
+    Procedure bertujuan untuk menampilkan daftar transaksi ke layar dengan opsi filter.
+    I. S. : Data transaksi sudah ada
+    F. S. : Daftar transaksi ditampilkan ke layar sesuai dengan filter yang diberikan.
+            Jika filter "semua", tampilkan semua transaksi.
+            Jika filter "pemasukan", tampilkan hanya transaksi pemasukan.
+            Jika filter "pengeluaran", tampilkan hanya transaksi pengeluaran.
+*/
 
 
 
