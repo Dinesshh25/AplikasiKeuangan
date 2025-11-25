@@ -37,10 +37,13 @@ void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char*
     printf("\n--- Daftar Transaksi (%s) ---\n", filter);
     printf("ID\tTanggal\t\tPos Anggaran\tJenis\t\tNominal\tDeskripsi\n");
     printf("--------------------------------------------------------------------------\n");
+    // menampilkan transaksi sesuai filter
     for(index = 0; index < jumlahTransaksi; index++) {
+        // cek filter dan tampilkan transaksi yang sesuai
         if(strcmp(filter, "semua") == 0 ||
             (strcmp(filter, "pemasukan") == 0 && (strcmp(dataTransaksi[index].jenis, "Pemasukan") == 0 || strcmp(dataTransaksi[index].jenis, "pemasukan") == 0)) ||
             (strcmp(filter, "pengeluaran") == 0 && (strcmp(dataTransaksi[index].jenis, "Pengeluaran") == 0 || strcmp(dataTransaksi[index].jenis, "pengeluaran") == 0))) {
+            // menampilkan data transaksi
             printf("%s\t%s\t%s\t%s\t%d\t%s\n", 
                 dataTransaksi[index].id, 
                 dataTransaksi[index].tanggal, 
