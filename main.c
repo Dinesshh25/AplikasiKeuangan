@@ -54,7 +54,7 @@ void tampilSubMenuTransaksi();
     Procedure bertujuan untuk menampilkan submenu transaksi aplikasi keuangan mahasiswa ke layar.
     I. S. : Menu utama ditampilkan, dan pengguna memilih menu transaksi
     F. S. : Submenu transaksi aplikasi keuangan mahasiswa ditampilkan ke layar.
-            (1. tambah pemasukan, 2. tambah pengeluaran, 0. kembali)  
+            (1. tambah pemasukan, 2. tambah pengeluaran, 3. lihat daftar transaksi, 0. kembali)  
 */
 
 void loadDataTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi);
@@ -128,14 +128,43 @@ int avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTr
     Output : Mengembalikan rata-rata pengeluaran.
 */
 
+void tampilSubMenuDaftarTransaksi();
+/*
+    Procedure bertujuan untuk menampilkan submenu daftar transaksi aplikasi keuangan mahasiswa ke layar.
+    I. S. : Submenu transaksi ditampilkan, dan pengguna memilih untuk melihat daftar transaksi
+    F. S. : Submenu daftar transaksi aplikasi keuangan mahasiswa ditampilkan ke layar.
+            (1. semua, 2. pemasukan, 3. pengeluaran, 0. kembali)  
+*/
+
 void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char filter[]);
 /*
     Procedure bertujuan untuk menampilkan daftar transaksi ke layar dengan opsi filter.
-    I. S. : Data transaksi sudah ada
+    I. S. : Data transaksi sudah ada, filter diberikan ("semua", "pemasukan", atau "pengeluaran")
     F. S. : Daftar transaksi ditampilkan ke layar sesuai dengan filter yang diberikan.
             Jika filter "semua", tampilkan semua transaksi.
             Jika filter "pemasukan", tampilkan hanya transaksi pemasukan.
             Jika filter "pengeluaran", tampilkan hanya transaksi pengeluaran.
+*/
+
+void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
+/*
+    Procedure bertujuan untuk menampilkan laporan keuangan lengkap mulai dari rekapitulasi, pos anggaran, hingga kesimpulan kondisi keuangan.
+    I. S. : Data transaksi dan pos sudah ada, pengguna memilih menu laporan keuangan di menu utama.
+    F. S. : Laporan keuangan ditampilkan ke layar, termasuk total pemasukan, total pengeluaran, saldo akhir, rata-rata pengeluaran, data pos anggaran, status keuangan, dan kondisi keuangan.
+*/
+
+void tampilLaporanPos(PosAnggaran dataPos[], int jumlahPos, Transaksi dataTransaksi[], int jumlahTransaksi);
+/*
+    Procedure bertujuan untuk menampilkan tabel laporan pos anggaran beserta realisasi pengeluaran pada tampilan laporan keuangan.
+    I. S. : Data pos anggaran dan data transaksi sudah ada, pengguna memilih untuk melihat laporan keuangan di menu utama.
+    F. S. : Laporan pos anggaran ditampilkan ke layar, termasuk nama pos, batas nominal, realisasi, sisa anggaran, jumlah transaksi, dan status.
+*/
+
+void tampilRekapitulasi(int totalPemasukan, int totalPengeluaran, int saldoAkhir, int avgPengeluaran);
+/*
+    Procedure bertujuan untuk menampilkan rekapitulasi keuangan termasuk total pemasukan, total pengeluaran, saldo akhir, dan rata-rata pengeluaran pada bagian atas tampilan laporan keuangan.
+    I. S. : Data rekapitulasi sudah dihitung, pengguna memilih untuk melihat laporan keuangan di menu utama.
+    F. S. : Rekapitulasi keuangan ditampilkan ke layar termasuk jumlah transaksi pemasukan dan pengeluaran. 
 */
 
 
@@ -169,7 +198,7 @@ int main() {
                 tambahTransaksi(dataTransaksi, &jumlahTransaksi, dataPos, jumlahPos); //menambah transaksi
                 break;
             case 3:
-                tampilLaporanKeuangan(dataTransaksi, jumlahTransaksi); //menampilkan laporan keuangan
+                tampilLaporanKeuangan(dataTransaksi, jumlahTransaksi, dataPos, jumlahPos); //menampilkan laporan keuangan
                 break;
             case 0:
                 printf("Terima kasih telah menggunakan Aplikasi Keuangan. Sampai jumpa!\n"); //keluar dari aplikasi

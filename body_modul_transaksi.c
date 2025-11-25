@@ -136,11 +136,12 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
 //     int count = 0;
 
 //     /* Deskripsi Program */
-//     //Menghitung jumlah transaksi berdasarkan nama pos atau jenis transaksi
+//     //Menghitung jumlah transaksi berdasarkan nama pos atau jenis transaksi pemasukan/pengeluaran
 //     for (index = 0; index < jumlahTransaksi; index++){
 //         if (strcmp(dataTransaksi[index].pos, kriteria) == 0 || strcmp(dataTransaksi[index].jenis, kriteria) == 0){
 //             count++;
 //         }
 //     }
+
 //     return count;
 // }
