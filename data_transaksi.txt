@@ -1,0 +1,2 @@
+T001|12/11/2025|P001|Pemasukan|3000000|Buat makan 
+T002|22/11/2025|P003|Pemasukan|300000|testing

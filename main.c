@@ -160,19 +160,26 @@ void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
    I. S. : Data pos anggaran sudah ada
    F. S. : Daftar pos anggaran ditampilkan ke layar dengan informasi:
            - ID
-           - No (nomor urut)
            - Nama Pos
            - Batas Nominal (Rp)
 */ 
 
-int validasiPosAnggaran(PosAnggaran dataPos[], int jumlahPos, char namaPos[], int nominal);
-/* Function bertujuan untuk memvalidasi apakah pengeluaran melebihi batas anggaran
-   I. S. : Data pos anggaran sudah ada, kategori dan nominal pengeluaran diketahui
-   F. S. : Return 1 jika melebihi batas, return 0 jika masih dalam batas
-           Menampilkan peringatan jika melebihi batas 
-*/
+int validasiNamaPos(PosAnggaran dataPos[], int jumlahPos, char nama[]);
+int validasiNominal(int nominal);
+void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos);
 
-void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos) ;
+void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
+/* Procedure bertujuan untuk menampilkan laporan keuangan lengkap
+   I. S. : Data transaksi dan pos anggaran sudah ada
+   F. S. : Laporan keuangan ditampilkan ke layar dengan informasi:
+           - Total Pemasukan
+           - Total Pengeluaran
+           - Saldo Akhir
+           - Rata-rata Pengeluaran
+           - Tabel Pos Anggaran (Batas, Realisasi, Sisa, Jumlah Transaksi, Status)
+           - Kondisi Keuangan
+           - Kesimpulan
+*/
 
 
 
@@ -187,6 +194,7 @@ int main() {
 
     /* Deskripsi Program */
     printf("Selamat datang di Aplikasi Keuangan\n");
+    
 
     loadDataTransaksi(dataTransaksi, &jumlahTransaksi); //memuat data transaksi dari file
     loadDataPos(dataPos, &jumlahPos); //memuat data pos anggaran dari file
@@ -228,7 +236,7 @@ int main() {
                     printf("Masukkan pilihan: ");
                     scanf("%d", &pilihanSubMenu);
 
-                    switch (pilihanMenu){
+                    switch (pilihanSubMenu){
                     case 1:
                         tambahTransaksi(dataTransaksi,&jumlahTransaksi,dataPos, jumlahPos);    
                         break;
@@ -247,8 +255,7 @@ int main() {
                 break;
                 
             case 3:
-                // Sub Menu Pos Anggaran (dengan looping sendiri)
-                
+                tampilLaporanKeuangan(dataTransaksi,jumlahTransaksi,dataPos,jumlahPos);
                 break;
                 
             case 0:
