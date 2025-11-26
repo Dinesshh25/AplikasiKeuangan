@@ -10,6 +10,7 @@
 typedef struct {
     char namaPos[50];
     int batasNominal;
+    int totalTerpakai;
 } PosAnggaran;
 
 typedef struct {
@@ -29,6 +30,7 @@ typedef struct {
 #include "body_modul_transaksi.c"
 #include "body_modul_laporan.c"
 #include "body_modul_tampilan.c"
+
 
 
 /*
@@ -138,6 +140,36 @@ void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char 
             Jika filter "pengeluaran", tampilkan hanya transaksi pengeluaran.
 */
 
+//Belum Dikasih Keterangan 
+void tampilSubMenuPos();
+void tampilSubMenuTransaksi();
+// 
+
+void appendDataPos(PosAnggaran dataPos[], int *jumlahPos);
+/* Procedure bertujuan untuk menambahkan pos anggaran baru
+   I. S. : Array pos anggaran sudah dideklarasikan
+   F. S. : Pos anggaran baru ditambahkan ke dalam array, jumlahPos bertambah 1 
+*/
+
+void loadDataPos(PosAnggaran dataPos[], int *jumlahPos);
+/*
+    /* Procedure bertujuan untuk menampilkan daftar semua pos anggaran ke layar
+   I. S. : Data pos anggaran sudah ada
+   F. S. : Daftar pos anggaran ditampilkan ke layar dengan informasi:
+           - ID Pos
+           - Kategori
+           - Batas Maksimal
+
+*/ 
+int validasiPosAnggaran(PosAnggaran dataPos[], int jumlahPos, char namaPos[], int nominal);
+/* Function bertujuan untuk memvalidasi apakah pengeluaran melebihi batas anggaran
+   I. S. : Data pos anggaran sudah ada, kategori dan nominal pengeluaran diketahui
+   F. S. : Return 1 jika melebihi batas, return 0 jika masih dalam batas
+           Menampilkan peringatan jika melebihi batas 
+*/
+
+void tampilLaporan();
+
 
 
 int main() {
@@ -163,13 +195,13 @@ int main() {
         //menjalankan menu utama, memutuskan fungsi berdasarkan pilihan menu
         switch (pilihanMenu){
             case 1:
-                tambahPos(dataPos, &jumlahPos); //menambah pos anggaran
+                tampilSubMenuPos();
                 break;
             case 2:
-                tambahTransaksi(dataTransaksi, &jumlahTransaksi, dataPos, jumlahPos); //menambah transaksi
+                tampilSubMenuTransaksi();
                 break;
             case 3:
-                tampilLaporanKeuangan(dataTransaksi, jumlahTransaksi); //menampilkan laporan keuangan
+                tampilLaporan();
                 break;
             case 0:
                 printf("Terima kasih telah menggunakan Aplikasi Keuangan. Sampai jumpa!\n"); //keluar dari aplikasi
