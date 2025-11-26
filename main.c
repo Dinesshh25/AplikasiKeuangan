@@ -8,8 +8,10 @@
     Transaksi: Menyimpan informasi tentang transaksi keuangan termasuk pemasukan dan pengeluaran seperti ID, tanggal, pos anggaran, nominal, jenis, dan deskripsi.
 */
 typedef struct {
+    char id[10];
     char namaPos[50];
     int batasNominal;
+    int totalTerpakai;
 } PosAnggaran;
 
 typedef struct {
@@ -29,6 +31,7 @@ typedef struct {
 #include "body_modul_transaksi.c"
 #include "body_modul_laporan.c"
 #include "body_modul_tampilan.c"
+
 
 
 /*
@@ -167,6 +170,39 @@ void tampilRekapitulasi(int totalPemasukan, int totalPengeluaran, int saldoAkhir
     F. S. : Rekapitulasi keuangan ditampilkan ke layar termasuk jumlah transaksi pemasukan dan pengeluaran. 
 */
 
+void loadDataPos(PosAnggaran dataPos[], int *jumlahPos);
+/* Procedure bertujuan untuk memuat data pos anggaran dari file
+   I. S. : File pos_anggaran.txt mungkin ada atau tidak ada
+   F. S. : Jika file ada, data dimuat ke array dan jumlahPos diupdate
+           Jika file tidak ada, dimulai dengan data kosong (jumlahPos = 0)
+*/
+
+void appendDataPos(PosAnggaran dataPos[], int *jumlahPos);
+/* Procedure bertujuan untuk menambahkan pos anggaran baru
+   I. S. : Array pos anggaran sudah dideklarasikan
+   F. S. : Pos anggaran baru ditambahkan ke dalam array, jumlahPos bertambah 1 
+           Data otomatis disimpan ke file pos_anggaran.txt
+*/
+
+void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
+/* Procedure bertujuan untuk menampilkan daftar semua pos anggaran ke layar
+   I. S. : Data pos anggaran sudah ada
+   F. S. : Daftar pos anggaran ditampilkan ke layar dengan informasi:
+           - ID
+           - No (nomor urut)
+           - Nama Pos
+           - Batas Nominal (Rp)
+*/ 
+
+int validasiPosAnggaran(PosAnggaran dataPos[], int jumlahPos, char namaPos[], int nominal);
+/* Function bertujuan untuk memvalidasi apakah pengeluaran melebihi batas anggaran
+   I. S. : Data pos anggaran sudah ada, kategori dan nominal pengeluaran diketahui
+   F. S. : Return 1 jika melebihi batas, return 0 jika masih dalam batas
+           Menampilkan peringatan jika melebihi batas 
+*/
+
+void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos) ;
+
 
 
 int main() {
@@ -176,6 +212,7 @@ int main() {
     int jumlahTransaksi = 0;
     int jumlahPos = 0;
     int pilihanMenu;
+    int pilihanSubMenu; // Tambahan untuk sub menu
 
     /* Deskripsi Program */
     printf("Selamat datang di Aplikasi Keuangan\n");
@@ -192,17 +229,60 @@ int main() {
         //menjalankan menu utama, memutuskan fungsi berdasarkan pilihan menu
         switch (pilihanMenu){
             case 1:
-                tambahPos(dataPos, &jumlahPos); //menambah pos anggaran
+                do {
+                    tampilSubMenuPos(); // Tampilkan sub menu pos
+                    printf("Masukkan pilihan: ");
+                    scanf("%d", &pilihanSubMenu);
+                    
+                    switch(pilihanSubMenu) {
+                        case 1:
+                            appendDataPos(dataPos, &jumlahPos);
+                            break;
+                        case 2:
+                            tampilDaftarPos(dataPos,jumlahPos);
+                            break;
+                        case 0:
+                            printf("\nKembali ke menu utama...\n");
+                            break;
+                        default:
+                            printf("Pilihan tidak valid. Silakan coba lagi.\n");
+                            break;
+                    }
+                } while(pilihanSubMenu != 0); // Loop sampai pilih 0 (kembali)
                 break;
+                
             case 2:
-                tambahTransaksi(dataTransaksi, &jumlahTransaksi, dataPos, jumlahPos); //menambah transaksi
+                do {
+                    tampilSubMenuTransaksi();
+                    printf("Masukkan pilihan: ");
+                    scanf("%d", &pilihanSubMenu);
+
+                    switch (pilihanMenu){
+                    case 1:
+                        tambahTransaksi(dataTransaksi,&jumlahTransaksi,dataPos, jumlahPos);    
+                        break;
+                    case 2:
+                        loadDataTransaksi(dataTransaksi, &jumlahTransaksi);
+                        break;
+                     case 0:
+                        printf("\nKembali ke menu utama...\n");
+                        break;
+                    default:
+                        printf("Pilihan tidak valid. Silakan coba lagi.\n");
+                        break;
+                    }
+                } while (pilihanSubMenu != 0);
+                
                 break;
+                
             case 3:
-                tampilLaporanKeuangan(dataTransaksi, jumlahTransaksi, dataPos, jumlahPos); //menampilkan laporan keuangan
+                tampilLaporanKeuangan(dataTransaksi, jumlahTransaksi); //menampilkan laporan keuangan
                 break;
+                
             case 0:
                 printf("Terima kasih telah menggunakan Aplikasi Keuangan. Sampai jumpa!\n"); //keluar dari aplikasi
                 break;
+                
             default:
                 printf("Pilihan tidak valid. Silakan coba lagi.\n"); //menangani pilihan tidak valid
                 break;
@@ -218,7 +298,7 @@ int pilihMenu(){
     int pilihanMenu;
 
     /* Deskripsi Program */
-    printf("Masukkan pilihan (1/2/3/0): ");
+    printf("Masukkan pilihan: ");
     scanf("%d", &pilihanMenu);
     return pilihanMenu;
 }
