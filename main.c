@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 
 /*
     Struktur Data Aplikasi Keuangan Mahasiswa
@@ -100,7 +101,7 @@ int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlah
 /*
     Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos atau jenis pemasukan/pengeluaran.
     Input : kriteria (nama pos anggaran atau jenis transaksi), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
-    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.
+    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.1
 */
 
 int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi);
@@ -124,7 +125,7 @@ int hitungSaldoAKhir(int totalPemasukan, int totalPengeluaran);
     Output : Mengembalikan saldo akhir (totalPemasukan - totalPengeluaran).
 */
 
-int avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi);
+float avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi);
 /*
     Function bertujuan untuk menghitung rata-rata pengeluaran dari semua transaksi pengeluaran yang ada.
     Input : totalPengeluaran, dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
@@ -164,9 +165,35 @@ void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
            - Batas Nominal (Rp)
 */ 
 
-int validasiNamaPos(PosAnggaran dataPos[], int jumlahPos, char nama[]);
-int validasiNominal(int nominal);
-void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos);
+void hitungRealisasi(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
+/* Procedure untuk menghitung realisasi pengeluaran per pos
+   I. S. : Data transaksi dan pos anggaran sudah ada
+   F. S. : totalTerpakai dan jumlahTransaksiPerPos diupdate untuk setiap pos
+*/
+
+void tampilRingkasanKeuangan(int totalPemasukan, int totalPengeluaran, int saldoAkhir, float rataRata, int jumlahPemasukan, int jumlahPengeluaran);
+/* Procedure untuk menampilkan ringkasan keuangan
+   I. S. : Semua data perhitungan sudah selesai
+   F. S. : Ringkasan keuangan ditampilkan ke layar
+*/
+
+void tampilTabelPosAnggaran(PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
+/* Procedure untuk menampilkan tabel pos anggaran
+   I. S. : Data pos anggaran dan jumlah transaksi per pos sudah dihitung
+   F. S. : Tabel pos anggaran ditampilkan ke layar
+*/
+
+void kondisiKeuangan(int saldoAkhir);
+/* Procedure untuk menampilkan kondisi keuangan (Defisit/Seimbang/Surplus)
+   I. S. : Saldo akhir sudah diketahui
+   F. S. : Kondisi keuangan ditampilkan ke layar
+*/
+
+void kesimpulanKeuangan(PosAnggaran dataPos[], int jumlahPos, int saldoAkhir);
+/* Procedure untuk menampilkan kesimpulan keuangan
+   I. S. : Data pos anggaran dan saldo akhir sudah diketahui
+   F. S. : Kesimpulan keuangan ditampilkan ke layar
+*/
 
 void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
 /* Procedure bertujuan untuk menampilkan laporan keuangan lengkap
@@ -181,7 +208,11 @@ void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAn
            - Kesimpulan
 */
 
+int validasiNamaPos(PosAnggaran dataPos[], int jumlahPos, char nama[]);
 
+int validasiNominal(int nominal);
+
+void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos);
 
 int main() {
     /* Deklarasi Variabel */
@@ -191,10 +222,10 @@ int main() {
     int jumlahPos = 0;
     int pilihanMenu;
     int pilihanSubMenu; // Tambahan untuk sub menu
+    char filter[10];
 
     /* Deskripsi Program */
     printf("Selamat datang di Aplikasi Keuangan\n");
-    
 
     loadDataTransaksi(dataTransaksi, &jumlahTransaksi); //memuat data transaksi dari file
     loadDataPos(dataPos, &jumlahPos); //memuat data pos anggaran dari file
@@ -216,9 +247,12 @@ int main() {
                     switch(pilihanSubMenu) {
                         case 1:
                             appendDataPos(dataPos, &jumlahPos);
+                            getch();
                             break;
                         case 2:
                             tampilDaftarPos(dataPos,jumlahPos);
+                            printf("Tekan sembarang tombol untuk kembali ke menu pos...");
+                            getch();
                             break;
                         case 0:
                             printf("\nKembali ke menu utama...\n");
@@ -239,11 +273,19 @@ int main() {
                     switch (pilihanSubMenu){
                     case 1:
                         tambahTransaksi(dataTransaksi,&jumlahTransaksi,dataPos, jumlahPos);    
+                        printf("Transaksi baru berhasil ditambahkan!\n");
+                        printf("Tekan sembarang tombol untuk kembali ke menu transaksi...");
+                        getch();
                         break;
                     case 2:
-                        loadDataTransaksi(dataTransaksi, &jumlahTransaksi);
+                        tampilSubMenuDaftarTransaksi();
+                        printf("Masukkan pilihan (contoh: semua, pemasukan, pengeluaran): ");
+                        scanf("%s", filter);
+                        tampilDaftarTransaksi(dataTransaksi,jumlahTransaksi,filter);
+                        printf("Tekan sembarang tombol untuk kembali ke menu transaksi...");
+                        getch();
                         break;
-                     case 0:
+                    case 0:
                         printf("\nKembali ke menu utama...\n");
                         break;
                     default:
@@ -256,6 +298,8 @@ int main() {
                 
             case 3:
                 tampilLaporanKeuangan(dataTransaksi,jumlahTransaksi,dataPos,jumlahPos);
+                printf("Tekan sembarang tombol untuk kembali ke menu utama...");
+                getch();
                 break;
                 
             case 0:

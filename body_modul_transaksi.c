@@ -31,12 +31,6 @@ void loadDataTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi){
 void appendDataTransaksi(Transaksi transaksiBaru){ 
     /* Deskripsi Program */
     FILE *filetransaksi = fopen("data_transaksi.txt", "a"); //membuka file data_transaksi.txt untuk penambahan data
-    //Cek jika file tidak ada
-    if (filetransaksi == NULL)
-    {
-        printf("Gagal membuka file data_transaksi.txt untuk penambahan data.\n");
-        return;
-    }   
 
     //Menambahkan data transaksi baru ke file
     fprintf(filetransaksi, "%s|%s|%s|%s|%d|%s\n",
@@ -129,18 +123,3 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
         (*jumlahTransaksi)++;
     }
 }
-
-// int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi){
-//     /* Deklarasi Variabel*/
-//     int index;
-//     int count = 0;
-
-//     /* Deskripsi Program */
-//     //Menghitung jumlah transaksi berdasarkan nama pos atau jenis transaksi
-//     for (index = 0; index < jumlahTransaksi; index++){
-//         if (strcmp(dataTransaksi[index].pos, kriteria) == 0 || strcmp(dataTransaksi[index].jenis, kriteria) == 0){
-//             count++;
-//         }
-//     }
-//     return count;
-// }
