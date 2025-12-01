@@ -31,12 +31,6 @@ void loadDataTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi){
 void appendDataTransaksi(Transaksi transaksiBaru){ 
     /* Deskripsi Program */
     FILE *filetransaksi = fopen("data_transaksi.txt", "a"); //membuka file data_transaksi.txt untuk penambahan data
-    //Cek jika file tidak ada
-    if (filetransaksi == NULL)
-    {
-        printf("Gagal membuka file data_transaksi.txt untuk penambahan data.\n");
-        return;
-    }   
 
     //Menambahkan data transaksi baru ke file
     fprintf(filetransaksi, "%s|%s|%s|%s|%d|%s\n",
@@ -56,48 +50,63 @@ void generateId(int jumlahTransaksi, char *bufferId){
     sprintf(bufferId, "T%03d", jumlahTransaksi); //menghasilkan ID unik dengan format TXXX
 }
 
-int validasiTransaksi(Transaksi transaksiBaru, PosAnggaran dataPos[], int jumlahPos){
-    /* Deklarasi Variabel*/
-    int i, cekMasuk, cekKeluar;
+void isJenisTransaksiValid(char *jenisTransaksi){
+    /* Deskripsi Program */
+    while (1){
+        if (strcmp(jenisTransaksi, "Pemasukan") == 0 || strcmp(jenisTransaksi, "pemasukan") == 0 ||
+            strcmp(jenisTransaksi, "Pengeluaran") == 0 || strcmp(jenisTransaksi, "pengeluaran") == 0){
+            break; //jenis valid
+        } else {
+            printf("Jenis transaksi tidak valid. Masukkan ulang (Pemasukan/Pengeluaran): ");
+            scanf(" %[^\n]", jenisTransaksi);
+        }
+    }
+}
+
+void isNominalTransaksiValid(int *nominalTransaksi){
+    /* Deskripsi Program */
+    while (1){
+        if (*nominalTransaksi > 0){
+            break; //nominal valid
+        } else {
+            printf("Nominal transaksi harus lebih dari 0. Masukkan ulang: ");
+            scanf("%d", nominalTransaksi);
+        }
+    }
+}
+
+void isTanggalTransaksiValid(char *tanggalTransaksi){
+    /* Deskripsi Program */
+    while (1){
+        if (strlen(tanggalTransaksi) > 0){
+            break; //tanggal valid
+        } else {
+            printf("Tanggal transaksi tidak boleh kosong. Masukkan ulang (DD/MM/YYYY): ");
+            scanf(" %[^\n]", tanggalTransaksi);
+        }
+    }
+}
+
+void isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int jumlahPos){
+    /* Deklarasi Variabel */
+    int i;
     int posValid = 0;
 
     /* Deskripsi Program */
-    // Validasi jenis transaksi
-    cekMasuk = strcmp(transaksiBaru.jenis, "Pemasukan") == 0 || strcmp(transaksiBaru.jenis, "pemasukan") == 0; //case insensitive
-    cekKeluar = strcmp(transaksiBaru.jenis, "Pengeluaran") == 0 || strcmp(transaksiBaru.jenis, "pengeluaran") == 0; //case insensitive
-    if (!cekMasuk && !cekKeluar){
-        printf("Jenis transaksi tidak valid. Harus 'Pemasukan' atau 'Pengeluaran'.\n");
-        return 0;
-    }
-
-    // Validasi nominal
-    if (transaksiBaru.nominal <= 0){
-        printf("Nominal transaksi harus lebih dari 0.\n");
-        return 0;
-    }
-
-    // Validasi tanggal
-    if (strlen(transaksiBaru.tanggal) == 0){
-        printf("Tanggal transaksi tidak boleh kosong.\n");
-        return 0;
-    }
-
-    // Validasi pos anggaran
-    if (cekKeluar) {
+    while (1){
         for (i = 0; i < jumlahPos; i++){
-            if (strcmp(transaksiBaru.pos, dataPos[i].namaPos) == 0){
+            if (strcmp(posAnggaran, dataPos[i].namaPos) == 0){
                 posValid = 1;
                 break;
             }
         }
-        
-        if (!posValid){
-            printf("Pos anggaran tidak valid...\n");
-            return 0;
+        if (posValid){
+            break; //pos anggaran valid
+        } else {
+            printf("Pos anggaran tidak valid. Masukkan ulang: ");
+            scanf(" %[^\n]", posAnggaran);
         }
     }
-
-    return 1; //data valid
 }
 
 void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos){
@@ -109,39 +118,36 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
     transaksiBaru.nominal = 0; //inisialisasi nominal
     printf("Menambahkan Transaksi Baru:\n");
     // Input data transaksi baru dari pengguna
-    printf("Masukkan tanggal transaksi (DD/MM/YYYY): ");
-    scanf("%s", transaksiBaru.tanggal);
-    printf("Masukkan pos anggaran: ");
-    scanf(" %[^\n]", transaksiBaru.pos);
-    printf("Masukkan jenis transaksi (Pemasukan/Pengeluaran): ");
-    scanf(" %[^\n]", transaksiBaru.jenis);
-    printf("Masukkan nominal transaksi: ");
-    scanf("%d", &transaksiBaru.nominal);
+    do
+    {
+        printf("Masukkan tanggal transaksi (DD/MM/YYYY): ");
+        scanf("%s", transaksiBaru.tanggal);
+    } while (isTanggalTransaksiValid(transaksiBaru.tanggal), 0);
+    do
+    {
+        printf("Masukkan pos anggaran: ");
+        scanf(" %[^\n]", transaksiBaru.pos);
+    } while(isPosAnggaranTransaksiValid(transaksiBaru.pos, dataPos, jumlahPos), 0);
+    
+    do
+    {
+        printf("Masukkan jenis transaksi (Pemasukan/Pengeluaran): ");
+        scanf(" %[^\n]", transaksiBaru.jenis);
+    } while (isJenisTransaksiValid(transaksiBaru.jenis), 0);
+    do
+    {
+        printf("Masukkan nominal transaksi: ");
+        scanf("%d", &transaksiBaru.nominal);
+    } while (isNominalTransaksiValid(&transaksiBaru.nominal), 0);
     printf("Masukkan deskripsi transaksi: ");
     scanf(" %[^\n]", transaksiBaru.deskripsi);
 
     generateId(*jumlahTransaksi + 1, transaksiBaru.id); //menghasilkan ID unik untuk transaksi baru
-    valid = validasiTransaksi(transaksiBaru, dataPos, jumlahPos); //memvalidasi data transaksi baru
+    // valid = validasiTransaksi(transaksiBaru, dataPos, jumlahPos); //memvalidasi data transaksi baru
     //Jika data valid, tambahkan ke file dan array
-    if (valid){
+    if (1){ //ubah kembali ke valid jika fungsi validasi diaktifkan 
         appendDataTransaksi(transaksiBaru);
         dataTransaksi[*jumlahTransaksi] = transaksiBaru;
         (*jumlahTransaksi)++;
     }
 }
-
-// int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi){
-//     /* Deklarasi Variabel*/
-//     int index;
-//     int count = 0;
-
-//     /* Deskripsi Program */
-//     //Menghitung jumlah transaksi berdasarkan nama pos atau jenis transaksi pemasukan/pengeluaran
-//     for (index = 0; index < jumlahTransaksi; index++){
-//         if (strcmp(dataTransaksi[index].pos, kriteria) == 0 || strcmp(dataTransaksi[index].jenis, kriteria) == 0){
-//             count++;
-//         }
-//     }
-
-//     return count;
-// }

@@ -1,51 +1,65 @@
 int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi){
-    /* Deklarasi Variabel */
-    int totalPemasukan = 0;
-    int index;
-
-    /* Deskripsi Program */
-    // menghitung total pemasukan
-    for (index = 0; index < jumlahTransaksi; index++){
-        if (strcmp(dataTransaksi[index].jenis, "Pemasukan") == 0 || strcmp(dataTransaksi[index].jenis, "pemasukan") == 0){
-            totalPemasukan += dataTransaksi[index].nominal; //menambahkan nominal ke total pemasukan
+    int total = 0;
+    for (int i = 0; i < jumlahTransaksi; i++) {
+        if (strcmp(dataTransaksi[i].jenis, "Pemasukan") == 0) {
+            total += dataTransaksi[i].nominal;
         }
     }
-    return totalPemasukan; //mengembalikan total pemasukan
+    return total;
 }
 
 int hitungTotalPengeluaran(Transaksi dataTransaksi[], int jumlahTransaksi){
-    /* Deklarasi Variabel */
-    int totalPengeluaran = 0;
-    int index;
-
-    /* Deskripsi Program */
-    // menghitung total pengeluaran
-    for (index = 0; index < jumlahTransaksi; index++){
-        if (strcmp(dataTransaksi[index].jenis, "Pengeluaran") == 0 || strcmp(dataTransaksi[index].jenis, "pengeluaran") == 0){
-            totalPengeluaran += dataTransaksi[index].nominal; //menambahkan nominal ke total pengeluaran
+    int total = 0;
+    for (int i = 0; i < jumlahTransaksi; i++) {
+        if (strcmp(dataTransaksi[i].jenis, "Pengeluaran") == 0) {
+            total += dataTransaksi[i].nominal;
         }
     }
-    return totalPengeluaran; //mengembalikan total pengeluaran
+    return total;
 }
 
-int hitungSaldoAKhir(int totalPemasukan, int totalPengeluaran){
-    /* Deskripsi Program */
-    return totalPemasukan - totalPengeluaran; //menghitung dan mengembalikan saldo akhir
+int hitungSaldoAkhir(int totalPemasukan, int totalPengeluaran){
+    return totalPemasukan - totalPengeluaran;
 }
 
-int avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi){
-    /* Deklarasi Variabel */
-    int countPengeluaran = 0;
-    int index;
-
-    /* Deskripsi Program */
-    // menghitung rata-rata pengeluaran
-    for (index = 0; index < jumlahTransaksi; index++){
-        if (strcmp(dataTransaksi[index].jenis, "Pengeluaran") == 0 || strcmp(dataTransaksi[index].jenis, "pengeluaran") == 0){
-            countPengeluaran++; //menghitung jumlah transaksi pengeluaran
+int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi){
+    int jumlah = 0;
+    for (int i = 0; i < jumlahTransaksi; i++) {
+        if (strcmp(dataTransaksi[i].jenis, kriteria) == 0) {
+            jumlah++;
         }
-    }   
-    return totalPengeluaran / countPengeluaran; //menghitung dan mengembalikan rata-rata pengeluaran
+    }
+    return jumlah;
 }
 
-// yg belum ada: kondisiKeuangan(), kesimpulanKeuangan(), hitungRealisasi(), hitungJumlahTransaksi()
+float avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi){
+    int jumlahPengeluaran = hitungJumlahTransaksi("Pengeluaran", dataTransaksi, jumlahTransaksi);
+    
+    if (jumlahPengeluaran > 0) {
+        return (float)totalPengeluaran / jumlahPengeluaran;
+    }
+    return 0;
+}
+
+
+void hitungRealisasi(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]) {
+    // Reset realisasi
+    for (int i = 0; i < jumlahPos; i++) {
+        dataPos[i].totalTerpakai = 0;
+        jumlahTransaksiPerPos[i] = 0;
+    }
+
+    // Hitung per pos berdasarkan ID pos
+    for (int i = 0; i < jumlahTransaksi; i++) {
+        if (strcmp(dataTransaksi[i].jenis, "Pengeluaran") == 0) {
+            for (int j = 0; j < jumlahPos; j++) {
+                // Bandingkan ID pos di transaksi dengan ID pos di dataPos
+                if (strcmp(dataTransaksi[i].pos, dataPos[j].namaPos) == 0) {
+                    dataPos[j].totalTerpakai += dataTransaksi[i].nominal;
+                    jumlahTransaksiPerPos[j]++;
+                    break;
+                }
+            }
+        }
+    }
+}

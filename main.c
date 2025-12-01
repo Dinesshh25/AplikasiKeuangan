@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 
 /*
     Struktur Data Aplikasi Keuangan Mahasiswa
@@ -81,12 +82,36 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
     F. S. : dataTransaksi dan jumlahTransaksi bertambah 1 jika data valid dan data ditambahkan ke dalam file data_transaksi.
 */
 
-int validasiTransaksi(Transaksi transaksiBaru, PosAnggaran dataPos[], int jumlahPos);
+void isJenisTransaksiValid(char *jenisTransaksi);
 /*
-    Function bertujuan untuk memvalidasi data transaksi yang akan ditambahkan.
-    Input : Data transaksi baru (transaksiBaru), data pos anggaran (dataPos), jumlah pos anggaran (jumlahPos)
-    Output : Mengembalikan 1 dan data ditambahkan ke dalam file data_transaksi jika data valid (hanya pemasukan/pengeluaran, nominal > 0, tanggal tidak kosong, pos anggaran berasal dari dataPos)
-            Mengembalikan 0 dan menampilkan pesan kesalahan jika tidak valid.
+    Procedure bertujuan untuk memvalidasi jenis transaksi yang dimasukkan oleh pengguna.
+    I. S. : jenisTransaksi (string yang berisi jenis transaksi yang dimasukkan oleh pengguna)
+    F. S. : Jika jenis transaksi valid (Pemasukan atau Pengeluaran), prosedur selesai tanpa output.
+            Jika jenis transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+*/
+
+void isNominalTransaksiValid(int *nominalTransaksi);
+/*
+    Procedure bertujuan untuk memvalidasi nominal transaksi yang dimasukkan oleh pengguna.
+    I. S. : nominalTransaksi (pointer ke integer yang berisi nominal transaksi yang dimasukkan oleh pengguna)
+    F. S. : Jika nominal transaksi valid (lebih dari 0), prosedur selesai tanpa output.
+            Jika nominal transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+*/
+
+void isTanggalTransaksiValid(char *tanggalTransaksi);
+/*
+    Procedure bertujuan untuk memvalidasi tanggal transaksi yang dimasukkan oleh pengguna.
+    I. S. : tanggalTransaksi (string yang berisi tanggal transaksi yang dimasukkan oleh pengguna)
+    F. S. : Jika tanggal transaksi valid (tidak kosong), prosedur selesai tanpa output.
+            Jika tanggal transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+*/
+
+void isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int jumlahPos);
+/*
+    Procedure bertujuan untuk memvalidasi pos anggaran transaksi yang dimasukkan oleh pengguna.
+    I. S. : posAnggaran (string yang berisi pos anggaran yang dimasukkan oleh pengguna), dataPos (array data pos anggaran), jumlahPos (jumlah pos anggaran)
+    F. S. : Jika pos anggaran valid (ada dalam dataPos), prosedur selesai tanpa output.
+            Jika pos anggaran tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
 */
 
 void generateId(int jumlahTransaksi, char *bufferId);
@@ -100,7 +125,7 @@ int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlah
 /*
     Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos atau jenis pemasukan/pengeluaran.
     Input : kriteria (nama pos anggaran atau jenis transaksi), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
-    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.
+    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.1
 */
 
 int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi);
@@ -124,7 +149,7 @@ int hitungSaldoAKhir(int totalPemasukan, int totalPengeluaran);
     Output : Mengembalikan saldo akhir (totalPemasukan - totalPengeluaran).
 */
 
-int avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi);
+float avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi);
 /*
     Function bertujuan untuk menghitung rata-rata pengeluaran dari semua transaksi pengeluaran yang ada.
     Input : totalPengeluaran, dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
@@ -203,7 +228,77 @@ int validasiPosAnggaran(PosAnggaran dataPos[], int jumlahPos, char namaPos[], in
 
 void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos) ;
 
+void loadDataPos(PosAnggaran dataPos[], int *jumlahPos);
+/* Procedure bertujuan untuk memuat data pos anggaran dari file
+   I. S. : File pos_anggaran.txt mungkin ada atau tidak ada
+   F. S. : Jika file ada, data dimuat ke array dan jumlahPos diupdate
+           Jika file tidak ada, dimulai dengan data kosong (jumlahPos = 0)
+*/
 
+void appendDataPos(PosAnggaran dataPos[], int *jumlahPos);
+/* Procedure bertujuan untuk menambahkan pos anggaran baru
+   I. S. : Array pos anggaran sudah dideklarasikan
+   F. S. : Pos anggaran baru ditambahkan ke dalam array, jumlahPos bertambah 1 
+           Data otomatis disimpan ke file pos_anggaran.txt
+*/
+
+void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
+/* Procedure bertujuan untuk menampilkan daftar semua pos anggaran ke layar
+   I. S. : Data pos anggaran sudah ada
+   F. S. : Daftar pos anggaran ditampilkan ke layar dengan informasi:
+           - ID
+           - Nama Pos
+           - Batas Nominal (Rp)
+*/ 
+
+void hitungRealisasi(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
+/* Procedure untuk menghitung realisasi pengeluaran per pos
+   I. S. : Data transaksi dan pos anggaran sudah ada
+   F. S. : totalTerpakai dan jumlahTransaksiPerPos diupdate untuk setiap pos
+*/
+
+void tampilRingkasanKeuangan(int totalPemasukan, int totalPengeluaran, int saldoAkhir, float rataRata, int jumlahPemasukan, int jumlahPengeluaran);
+/* Procedure untuk menampilkan ringkasan keuangan
+   I. S. : Semua data perhitungan sudah selesai
+   F. S. : Ringkasan keuangan ditampilkan ke layar
+*/
+
+void tampilTabelPosAnggaran(PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
+/* Procedure untuk menampilkan tabel pos anggaran
+   I. S. : Data pos anggaran dan jumlah transaksi per pos sudah dihitung
+   F. S. : Tabel pos anggaran ditampilkan ke layar
+*/
+
+void kondisiKeuangan(int saldoAkhir);
+/* Procedure untuk menampilkan kondisi keuangan (Defisit/Seimbang/Surplus)
+   I. S. : Saldo akhir sudah diketahui
+   F. S. : Kondisi keuangan ditampilkan ke layar
+*/
+
+void kesimpulanKeuangan(PosAnggaran dataPos[], int jumlahPos, int saldoAkhir);
+/* Procedure untuk menampilkan kesimpulan keuangan
+   I. S. : Data pos anggaran dan saldo akhir sudah diketahui
+   F. S. : Kesimpulan keuangan ditampilkan ke layar
+*/
+
+void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
+/* Procedure bertujuan untuk menampilkan laporan keuangan lengkap
+   I. S. : Data transaksi dan pos anggaran sudah ada
+   F. S. : Laporan keuangan ditampilkan ke layar dengan informasi:
+           - Total Pemasukan
+           - Total Pengeluaran
+           - Saldo Akhir
+           - Rata-rata Pengeluaran
+           - Tabel Pos Anggaran (Batas, Realisasi, Sisa, Jumlah Transaksi, Status)
+           - Kondisi Keuangan
+           - Kesimpulan
+*/
+
+int validasiNamaPos(PosAnggaran dataPos[], int jumlahPos, char nama[]);
+
+int validasiNominal(int nominal);
+
+void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos);
 
 int main() {
     /* Deklarasi Variabel */
@@ -213,6 +308,7 @@ int main() {
     int jumlahPos = 0;
     int pilihanMenu;
     int pilihanSubMenu; // Tambahan untuk sub menu
+    char filter[10];
 
     /* Deskripsi Program */
     printf("Selamat datang di Aplikasi Keuangan\n");
@@ -237,9 +333,12 @@ int main() {
                     switch(pilihanSubMenu) {
                         case 1:
                             appendDataPos(dataPos, &jumlahPos);
+                            getch();
                             break;
                         case 2:
                             tampilDaftarPos(dataPos,jumlahPos);
+                            printf("Tekan sembarang tombol untuk kembali ke menu pos...");
+                            getch();
                             break;
                         case 0:
                             printf("\nKembali ke menu utama...\n");
@@ -257,14 +356,22 @@ int main() {
                     printf("Masukkan pilihan: ");
                     scanf("%d", &pilihanSubMenu);
 
-                    switch (pilihanMenu){
+                    switch (pilihanSubMenu){
                     case 1:
                         tambahTransaksi(dataTransaksi,&jumlahTransaksi,dataPos, jumlahPos);    
+                        printf("Transaksi baru berhasil ditambahkan!\n");
+                        printf("Tekan sembarang tombol untuk kembali ke menu transaksi...");
+                        getch();
                         break;
                     case 2:
-                        loadDataTransaksi(dataTransaksi, &jumlahTransaksi);
+                        tampilSubMenuDaftarTransaksi();
+                        printf("Masukkan pilihan (contoh: semua, pemasukan, pengeluaran): ");
+                        scanf("%s", filter);
+                        tampilDaftarTransaksi(dataTransaksi,jumlahTransaksi,filter);
+                        printf("Tekan sembarang tombol untuk kembali ke menu transaksi...");
+                        getch();
                         break;
-                     case 0:
+                    case 0:
                         printf("\nKembali ke menu utama...\n");
                         break;
                     default:
@@ -276,7 +383,9 @@ int main() {
                 break;
                 
             case 3:
-                tampilLaporanKeuangan(dataTransaksi, jumlahTransaksi); //menampilkan laporan keuangan
+                tampilLaporanKeuangan(dataTransaksi,jumlahTransaksi,dataPos,jumlahPos);
+                printf("Tekan sembarang tombol untuk kembali ke menu utama...");
+                getch();
                 break;
                 
             case 0:

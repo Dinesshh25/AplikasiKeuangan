@@ -1,0 +1,11 @@
+T009|23/12/2022|tugas|pemasukan|22000|qwer
+T010|11/22/2011|Tugas|pengeluaran|120000|ini tugas
+T003|12/12/2012|makan|pemasukan|30000|bakso
+T004|12/12/2022|Skincare|pengeluaran|50000|sunscreen
+T005|12/12/2022|Transportasi|pengeluaran|20000|lala
+T006|12/11/2025|Skincare|Pemasukan|50000|hahah
+T007|11/11/2025|Hiburan|Pengeluaran|20000|dauhduha
+T008|30/12/2021|minuman|pemasukan|180000|top up
+T009|31/12/2021|Minuman|pengeluaran|30000|kopi
+T010|01/01/2022|minuman|pemasukan|20000|topup
+T011|12/12/2022|Minuman|pengeluaran|1000|tes
