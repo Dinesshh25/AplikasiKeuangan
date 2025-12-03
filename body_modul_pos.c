@@ -19,7 +19,7 @@ void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos) {
     sprintf(idBaru, "P%03d", maxNum + 1);
 }
 
-// Procedure ubahKapital untuk membuat seluruh huruf nama pos menjadi huruf bear
+// Procedure ubahKapital untuk membuat seluruh huruf nama pos menjadi huruf besar
 void ubahKapital(char *s) {
     if (s[0] >= 'a' && s[0] <= 'z') {
         s[0] = s[0] - 32;  // ubah huruf kecil ke besar
@@ -92,9 +92,9 @@ int validasiNamaPos(PosAnggaran dataPos[], int jumlahPos, char nama[]) {
 
 
 // Fungsi validasiNamaPos untuk memberikan peringatan input nomina yang dibawah 0
-int validasiNominal(int nominal) {
-    if (nominal <= 0) {
-        printf("Batas nominal harus bilangan positif (>0)!\n");
+int validasiNominal(long long nominal) {
+    if (nominal <= 0 || nominal > 10000000000) {
+        printf("Batas nominal harus bilangan positif (>0) dan tidak boleh lebih dari 10 juta!\n");
         return 0;
     }
     return 1;
@@ -121,7 +121,7 @@ void appendDataPos(PosAnggaran dataPos[], int *jumlahPos) {
     // Input nominal + validasi
     do {
         printf("Masukkan Batas Nominal (Rp): ");
-        scanf("%d", &posBaru.batasNominal);
+        scanf("%lld", &posBaru.batasNominal);
     } while (!validasiNominal(posBaru.batasNominal));
 
     // Set awal pemakaian
