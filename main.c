@@ -11,7 +11,7 @@
 typedef struct {
     char id[10];
     char namaPos[50];
-    int batasNominal;
+    long long batasNominal;
     int totalTerpakai;
 } PosAnggaran;
 
@@ -35,22 +35,25 @@ typedef struct {
 
 
 
-/*
-    Header Modul
-*/
+/* 
+   HEADER MODUL APLIKASI KEUANGAN
+ */
+
+/* ========================================
+   MODUL TAMPILAN
+   ======================================== */
+
 void tampilMenu();
-/*
-    Procedure bertujuan untuk menampilkan menu utama aplikasi keuangan mahasiswa ke layar.
-    I. S. : Program dijalankan
-    F. S. : Menu utama aplikasi keuangan mahasiswa ditampilkan ke layar.
-            (1. tambah pos, 2. tambah transaksi, 3. laporan, 0. keluar)  
+/* Procedure bertujuan untuk menampilkan menu utama aplikasi keuangan mahasiswa ke layar
+   I.S. : Program dijalankan
+   F.S. : Menu utama aplikasi keuangan mahasiswa ditampilkan ke layar
+          (1. tambah pos, 2. tambah transaksi, 3. laporan, 0. keluar)
 */
 
 int pilihMenu();
-/*
-    Function bertujuan untuk menerima input pilihan menu dari pengguna.
-    Input : Pilihan menu dari pengguna
-    Output : Mengembalikan pilihan menu sebagai integer
+/* Function bertujuan untuk menerima input pilihan menu dari pengguna
+   Input  : Pilihan menu dari pengguna (integer)
+   Output : Pilihan menu yang dipilih pengguna
 */
 
 void tampilSubMenuTransaksi();
@@ -60,6 +63,17 @@ void tampilSubMenuTransaksi();
     F. S. : Submenu transaksi aplikasi keuangan mahasiswa ditampilkan ke layar.
             (1. tambah pemasukan, 2. tambah pengeluaran, 3. lihat daftar transaksi, 0. kembali)  
 */
+
+void tampilSubMenuPos();
+/* Procedure bertujuan untuk menampilkan submenu pos anggaran ke layar
+   I.S. : Menu utama ditampilkan dan pengguna memilih menu pos anggaran
+   F.S. : Submenu pos anggaran ditampilkan ke layar
+          (1. Tambah Pos Anggaran, 2. Tampilkan Daftar Pos, 0. Kembali)
+*/
+
+/* ========================================
+   MODUL TRANSAKSI
+   ======================================== */
 
 void loadDataTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi);
 /*
@@ -114,6 +128,7 @@ void isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int j
             Jika pos anggaran tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
 */
 
+
 void generateId(int jumlahTransaksi, char *bufferId);
 /*
     Procedure bertujuan untuk menghasilkan ID unik untuk setiap transaksi berdasarkan jumlah transaksi yang ada.
@@ -121,40 +136,6 @@ void generateId(int jumlahTransaksi, char *bufferId);
     Output : bufferId (ID unik yang dihasilkan disimpan dalam bufferId)
 */
 
-int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi);
-/*
-    Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos atau jenis pemasukan/pengeluaran.
-    Input : kriteria (nama pos anggaran atau jenis transaksi), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
-    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.1
-*/
-
-int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi);
-/*
-    Function bertujuan untuk menghitung total pemasukan dari semua transaksi yang ada.
-    Input : Data transaksi sudah ada
-    Output : Mengembalikan total pemasukan dari semua transaksi.
-*/
-
-int hitungTotalPengeluaran(Transaksi dataTransaksi[], int jumlahTransaksi);
-/*
-    Function bertujuan untuk menghitung total pengeluaran dari semua transaksi yang ada.
-    Input : Data transaksi sudah ada
-    Output : Mengembalikan total pengeluaran dari semua transaksi.
-*/
-
-int hitungSaldoAKhir(int totalPemasukan, int totalPengeluaran);
-/*
-    Function bertujuan untuk menghitung saldo akhir berdasarkan total pemasukan dan total pengeluaran.
-    Input : totalPemasukan, totalPengeluaran
-    Output : Mengembalikan saldo akhir (totalPemasukan - totalPengeluaran).
-*/
-
-float avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi);
-/*
-    Function bertujuan untuk menghitung rata-rata pengeluaran dari semua transaksi pengeluaran yang ada.
-    Input : totalPengeluaran, dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
-    Output : Mengembalikan rata-rata pengeluaran.
-*/
 
 void tampilSubMenuDaftarTransaksi();
 /*
@@ -202,22 +183,6 @@ void loadDataPos(PosAnggaran dataPos[], int *jumlahPos);
            Jika file tidak ada, dimulai dengan data kosong (jumlahPos = 0)
 */
 
-void appendDataPos(PosAnggaran dataPos[], int *jumlahPos);
-/* Procedure bertujuan untuk menambahkan pos anggaran baru
-   I. S. : Array pos anggaran sudah dideklarasikan
-   F. S. : Pos anggaran baru ditambahkan ke dalam array, jumlahPos bertambah 1 
-           Data otomatis disimpan ke file pos_anggaran.txt
-*/
-
-void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
-/* Procedure bertujuan untuk menampilkan daftar semua pos anggaran ke layar
-   I. S. : Data pos anggaran sudah ada
-   F. S. : Daftar pos anggaran ditampilkan ke layar dengan informasi:
-           - ID
-           - No (nomor urut)
-           - Nama Pos
-           - Batas Nominal (Rp)
-*/ 
 
 int validasiPosAnggaran(PosAnggaran dataPos[], int jumlahPos, char namaPos[], int nominal);
 /* Function bertujuan untuk memvalidasi apakah pengeluaran melebihi batas anggaran
@@ -226,20 +191,35 @@ int validasiPosAnggaran(PosAnggaran dataPos[], int jumlahPos, char namaPos[], in
            Menampilkan peringatan jika melebihi batas 
 */
 
-void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos) ;
+void generateId(int jumlahTransaksi, char *bufferId);
+/* Procedure bertujuan untuk menghasilkan ID unik untuk transaksi baru
+   I.S. : Jumlah transaksi saat ini diketahui
+   F.S. : ID unik dengan format TXXX dihasilkan dan disimpan ke bufferId
+*/
+
+int validasiTransaksi(Transaksi transaksiBaru, PosAnggaran dataPos[], int jumlahPos);
+/* Function bertujuan untuk memvalidasi data transaksi yang akan ditambahkan
+   Input  : transaksiBaru (data transaksi baru), dataPos (array pos anggaran), jumlahPos (jumlah pos)
+   Output : 1 jika data valid (jenis Pemasukan/Pengeluaran, nominal > 0, tanggal tidak kosong, 
+            ID pos valid untuk pengeluaran), 0 jika tidak valid dengan pesan error
+*/
+
+/* ========================================
+   MODUL POS ANGGARAN
+   ======================================== */
 
 void loadDataPos(PosAnggaran dataPos[], int *jumlahPos);
-/* Procedure bertujuan untuk memuat data pos anggaran dari file
-   I. S. : File pos_anggaran.txt mungkin ada atau tidak ada
-   F. S. : Jika file ada, data dimuat ke array dan jumlahPos diupdate
-           Jika file tidak ada, dimulai dengan data kosong (jumlahPos = 0)
+/* Procedure bertujuan untuk memuat data pos anggaran dari file ke dalam array
+   I.S. : Array dataPos kosong, jumlahPos = 0
+   F.S. : Jika file pos_anggaran.txt ada, data dimuat ke array dan jumlahPos diperbarui
+          Jika file tidak ada, dimulai dengan data kosong
 */
 
 void appendDataPos(PosAnggaran dataPos[], int *jumlahPos);
 /* Procedure bertujuan untuk menambahkan pos anggaran baru
-   I. S. : Array pos anggaran sudah dideklarasikan
-   F. S. : Pos anggaran baru ditambahkan ke dalam array, jumlahPos bertambah 1 
-           Data otomatis disimpan ke file pos_anggaran.txt
+   I.S. : Array pos anggaran sudah dideklarasikan
+   F.S. : Jika data valid, pos anggaran baru ditambahkan ke array dan file, jumlahPos bertambah 1
+          Data otomatis disimpan ke file pos_anggaran.txt
 */
 
 void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
@@ -251,54 +231,110 @@ void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
            - Batas Nominal (Rp)
 */ 
 
-void hitungRealisasi(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
-/* Procedure untuk menghitung realisasi pengeluaran per pos
-   I. S. : Data transaksi dan pos anggaran sudah ada
-   F. S. : totalTerpakai dan jumlahTransaksiPerPos diupdate untuk setiap pos
-*/
-
-void tampilRingkasanKeuangan(int totalPemasukan, int totalPengeluaran, int saldoAkhir, float rataRata, int jumlahPemasukan, int jumlahPengeluaran);
-/* Procedure untuk menampilkan ringkasan keuangan
-   I. S. : Semua data perhitungan sudah selesai
-   F. S. : Ringkasan keuangan ditampilkan ke layar
-*/
-
-void tampilTabelPosAnggaran(PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
-/* Procedure untuk menampilkan tabel pos anggaran
-   I. S. : Data pos anggaran dan jumlah transaksi per pos sudah dihitung
-   F. S. : Tabel pos anggaran ditampilkan ke layar
-*/
-
-void kondisiKeuangan(int saldoAkhir);
-/* Procedure untuk menampilkan kondisi keuangan (Defisit/Seimbang/Surplus)
-   I. S. : Saldo akhir sudah diketahui
-   F. S. : Kondisi keuangan ditampilkan ke layar
-*/
-
-void kesimpulanKeuangan(PosAnggaran dataPos[], int jumlahPos, int saldoAkhir);
-/* Procedure untuk menampilkan kesimpulan keuangan
-   I. S. : Data pos anggaran dan saldo akhir sudah diketahui
-   F. S. : Kesimpulan keuangan ditampilkan ke layar
-*/
-
-void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
-/* Procedure bertujuan untuk menampilkan laporan keuangan lengkap
-   I. S. : Data transaksi dan pos anggaran sudah ada
-   F. S. : Laporan keuangan ditampilkan ke layar dengan informasi:
-           - Total Pemasukan
-           - Total Pengeluaran
-           - Saldo Akhir
-           - Rata-rata Pengeluaran
-           - Tabel Pos Anggaran (Batas, Realisasi, Sisa, Jumlah Transaksi, Status)
-           - Kondisi Keuangan
-           - Kesimpulan
+void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos);
+/* Procedure bertujuan untuk menghasilkan ID unik untuk pos anggaran baru
+   I.S. : Jumlah pos anggaran saat ini diketahui
+   F.S. : ID unik dengan format P001, P002, dst dihasilkan dan disimpan ke idBaru
 */
 
 int validasiNamaPos(PosAnggaran dataPos[], int jumlahPos, char nama[]);
+/* Function bertujuan untuk memvalidasi nama pos anggaran agar tidak duplikat
+   Input  : dataPos (array pos anggaran), jumlahPos (jumlah pos), nama (nama pos yang akan divalidasi)
+   Output : 1 jika nama sudah ada (duplikat), 0 jika nama belum ada
+*/
 
-int validasiNominal(int nominal);
+int validasiNominal(long long nominal);
+/* Function bertujuan untuk memvalidasi batas nominal agar bilangan positif
+   Input  : nominal (nilai yang akan divalidasi)
+   Output : 1 jika valid (nominal > 0), 0 jika tidak valid (nominal <= 0)
+*/
 
-void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos);
+/* ========================================
+   MODUL LAPORAN KEUANGAN
+   ======================================== */
+
+void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
+/* Procedure bertujuan untuk menampilkan laporan keuangan lengkap
+   I.S. : Data transaksi dan pos anggaran sudah ada
+   F.S. : Laporan keuangan ditampilkan ke layar dengan informasi:
+          - Total Pemasukan
+          - Total Pengeluaran
+          - Saldo Akhir
+          - Rata-rata Pengeluaran
+          - Tabel Pos Anggaran (Batas, Realisasi, Sisa, Jumlah Transaksi, Status)
+          - Kondisi Keuangan (Defisit/Seimbang/Surplus)
+          - Kesimpulan
+*/
+int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi);
+/*
+    Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos atau jenis pemasukan/pengeluaran.
+    Input : kriteria (nama pos anggaran atau jenis transaksi), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
+    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.1
+*/
+
+int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi);
+/* Function bertujuan untuk menghitung total pemasukan dari semua transaksi
+   Input  : dataTransaksi (array transaksi), jumlahTransaksi (jumlah transaksi)
+   Output : Total nominal dari semua transaksi bertipe "Pemasukan"
+*/
+
+int hitungTotalPengeluaran(Transaksi dataTransaksi[], int jumlahTransaksi);
+/* Function bertujuan untuk menghitung total pengeluaran dari semua transaksi
+   Input  : dataTransaksi (array transaksi), jumlahTransaksi (jumlah transaksi)
+   Output : Total nominal dari semua transaksi bertipe "Pengeluaran"
+*/
+
+int hitungSaldoAkhir(int totalPemasukan, int totalPengeluaran);
+/* Function bertujuan untuk menghitung saldo akhir
+   Input  : totalPemasukan (total pemasukan), totalPengeluaran (total pengeluaran)
+   Output : Saldo akhir (totalPemasukan - totalPengeluaran)
+*/
+
+float avgPengeluaran(int totalPengeluaran, Transaksi dataTransaksi[], int jumlahTransaksi);
+/* Function bertujuan untuk menghitung rata-rata pengeluaran per transaksi
+   Input  : totalPengeluaran (total pengeluaran), dataTransaksi (array transaksi), 
+            jumlahTransaksi (jumlah transaksi)
+   Output : Rata-rata pengeluaran per transaksi pengeluaran
+*/
+
+int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi);
+/* Function bertujuan untuk menghitung jumlah transaksi berdasarkan jenis
+   Input  : kriteria (jenis transaksi: "Pemasukan"/"Pengeluaran"), 
+            dataTransaksi (array transaksi), jumlahTransaksi (jumlah transaksi)
+   Output : Jumlah transaksi yang sesuai dengan kriteria
+*/
+
+void hitungRealisasi(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
+/* Procedure bertujuan untuk menghitung realisasi pengeluaran per pos anggaran
+   I.S. : Data transaksi dan pos anggaran sudah ada
+   F.S. : totalTerpakai dan jumlahTransaksiPerPos diperbarui untuk setiap pos
+*/
+
+void tampilRingkasanKeuangan(int totalPemasukan, int totalPengeluaran, int saldoAkhir, float rataRata, int jumlahPemasukan, int jumlahPengeluaran);
+/* Procedure bertujuan untuk menampilkan ringkasan keuangan ke layar
+   I.S. : Semua data perhitungan sudah selesai dihitung
+   F.S. : Ringkasan keuangan ditampilkan ke layar (total pemasukan, pengeluaran, saldo, rata-rata)
+*/
+
+void tampilTabelPosAnggaran(PosAnggaran dataPos[], int jumlahPos, int jumlahTransaksiPerPos[]);
+/* Procedure bertujuan untuk menampilkan tabel pos anggaran ke layar
+   I.S. : Data pos anggaran dan jumlah transaksi per pos sudah dihitung
+   F.S. : Tabel pos anggaran ditampilkan ke layar dengan informasi:
+          Pos, Batas, Realisasi, Sisa, Jumlah Transaksi, Status
+*/
+
+void kondisiKeuangan(int saldoAkhir);
+/* Procedure bertujuan untuk menampilkan kondisi keuangan ke layar
+   I.S. : Saldo akhir sudah dihitung
+   F.S. : Kondisi keuangan ditampilkan (Defisit/Seimbang/Surplus)
+*/
+
+void kesimpulanKeuangan(PosAnggaran dataPos[], int totalPemasukan, int totalPengeluaran);
+/* Procedure bertujuan untuk menampilkan kesimpulan keuangan ke layar
+   I.S. : Data pos anggaran dan saldo akhir sudah diketahui
+   F.S. : Kesimpulan keuangan ditampilkan ke layar berdasarkan analisis kondisi
+*/
+
 
 int main() {
     /* Deklarasi Variabel */
