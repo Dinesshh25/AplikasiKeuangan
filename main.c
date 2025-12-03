@@ -82,36 +82,32 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
     F. S. : dataTransaksi dan jumlahTransaksi bertambah 1 jika data valid dan data ditambahkan ke dalam file data_transaksi.
 */
 
-void isJenisTransaksiValid(char *jenisTransaksi);
+int isJenisTransaksiValid(char *jenisTransaksi);
 /*
-    Procedure bertujuan untuk memvalidasi jenis transaksi yang dimasukkan oleh pengguna.
-    I. S. : jenisTransaksi (string yang berisi jenis transaksi yang dimasukkan oleh pengguna)
-    F. S. : Jika jenis transaksi valid (Pemasukan atau Pengeluaran), prosedur selesai tanpa output.
-            Jika jenis transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+    Function bertujuan untuk memvalidasi jenis transaksi yang dimasukkan oleh pengguna.
+    Input : jenisTransaksi (string yang berisi jenis transaksi yang dimasukkan oleh pengguna)
+    Output : Mengembalikan 1 jika jenis transaksi valid (Pemasukan/Pengeluaran), atau 0 jika tidak valid.
 */
 
-void isNominalTransaksiValid(int *nominalTransaksi);
+int isNominalTransaksiValid(int *nominalTransaksi);
 /*
-    Procedure bertujuan untuk memvalidasi nominal transaksi yang dimasukkan oleh pengguna.
-    I. S. : nominalTransaksi (pointer ke integer yang berisi nominal transaksi yang dimasukkan oleh pengguna)
-    F. S. : Jika nominal transaksi valid (lebih dari 0), prosedur selesai tanpa output.
-            Jika nominal transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+    Function bertujuan untuk memvalidasi nominal transaksi yang dimasukkan oleh pengguna.
+    Input : nominalTransaksi (pointer ke integer yang berisi nominal transaksi yang dimasukkan oleh pengguna)
+    Output : Mengembalikan 1 jika nominal transaksi valid (lebih besar dari 0), atau 0 jika tidak valid.
 */
 
-void isTanggalTransaksiValid(char *tanggalTransaksi);
+int isTanggalTransaksiValid(char *tanggalTransaksi);
 /*
-    Procedure bertujuan untuk memvalidasi tanggal transaksi yang dimasukkan oleh pengguna.
-    I. S. : tanggalTransaksi (string yang berisi tanggal transaksi yang dimasukkan oleh pengguna)
-    F. S. : Jika tanggal transaksi valid (tidak kosong), prosedur selesai tanpa output.
-            Jika tanggal transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+    Function bertujuan untuk memvalidasi tanggal transaksi yang dimasukkan oleh pengguna.
+    Input : tanggalTransaksi (string yang berisi tanggal transaksi yang dimasukkan oleh pengguna)
+    Output : Mengembalikan 1 jika tanggal transaksi valid (tidak kosong), atau 0 jika tidak valid.
 */
 
-void isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int jumlahPos);
+int isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int jumlahPos);
 /*
-    Procedure bertujuan untuk memvalidasi pos anggaran transaksi yang dimasukkan oleh pengguna.
-    I. S. : posAnggaran (string yang berisi pos anggaran yang dimasukkan oleh pengguna), dataPos (array data pos anggaran), jumlahPos (jumlah pos anggaran)
-    F. S. : Jika pos anggaran valid (ada dalam dataPos), prosedur selesai tanpa output.
-            Jika pos anggaran tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+    Function bertujuan untuk memvalidasi pos anggaran transaksi yang dimasukkan oleh pengguna.
+    Input : posAnggaran (string yang berisi pos anggaran yang dimasukkan oleh pengguna), dataPos (array data pos anggaran), jumlahPos (jumlah pos anggaran yang ada)
+    Output : Mengembalikan 1 jika pos anggaran valid (ada di dataPos), atau 0 jika tidak valid.
 */
 
 void generateId(int jumlahTransaksi, char *bufferId);
@@ -359,7 +355,6 @@ int main() {
                     switch (pilihanSubMenu){
                     case 1:
                         tambahTransaksi(dataTransaksi,&jumlahTransaksi,dataPos, jumlahPos);    
-                        printf("Transaksi baru berhasil ditambahkan!\n");
                         printf("Tekan sembarang tombol untuk kembali ke menu transaksi...");
                         getch();
                         break;

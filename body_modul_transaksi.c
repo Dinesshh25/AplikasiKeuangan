@@ -47,107 +47,101 @@ void appendDataTransaksi(Transaksi transaksiBaru){
 
 void generateId(int jumlahTransaksi, char *bufferId){
     /* Deskripsi Program */
-    sprintf(bufferId, "T%03d", jumlahTransaksi); //menghasilkan ID unik dengan format TXXX
+    sprintf(bufferId, "T%03d", jumlahTransaksi + 1); //menghasilkan ID unik dengan format TXXX
 }
 
-void isJenisTransaksiValid(char *jenisTransaksi){
+int isJenisTransaksiValid(char *jenisTransaksi){
     /* Deskripsi Program */
-    while (1){
-        if (strcmp(jenisTransaksi, "Pemasukan") == 0 || strcmp(jenisTransaksi, "pemasukan") == 0 ||
-            strcmp(jenisTransaksi, "Pengeluaran") == 0 || strcmp(jenisTransaksi, "pengeluaran") == 0){
-            break; //jenis valid
-        } else {
-            printf("Jenis transaksi tidak valid. Masukkan ulang (Pemasukan/Pengeluaran): ");
-            scanf(" %[^\n]", jenisTransaksi);
-        }
+    // Cek validitas (Pemasukan/Pengeluaran, huruf besar/kecil)
+    if (strcmp(jenisTransaksi, "Pemasukan") == 0 || strcmp(jenisTransaksi, "pemasukan") == 0 ||
+        strcmp(jenisTransaksi, "Pengeluaran") == 0 || strcmp(jenisTransaksi, "pengeluaran") == 0){
+        return 1; // Valid
+    } else {
+        printf("Jenis transaksi tidak valid. Harus 'Pemasukan' atau 'Pengeluaran'.\n");
+        return 0; // Invalid
     }
 }
 
-void isNominalTransaksiValid(int *nominalTransaksi){
+int isNominalTransaksiValid(int *nominalTransaksi){
     /* Deskripsi Program */
-    while (1){
-        if (*nominalTransaksi > 0){
-            break; //nominal valid
-        } else {
-            printf("Nominal transaksi harus lebih dari 0. Masukkan ulang: ");
-            scanf("%d", nominalTransaksi);
-        }
+    if (*nominalTransaksi > 0){
+        return 1; // Valid
+    } else {
+        printf("Nominal transaksi harus lebih dari 0.\n");
+        return 0; // Invalid
     }
 }
 
-void isTanggalTransaksiValid(char *tanggalTransaksi){
+int isTanggalTransaksiValid(char *tanggalTransaksi){
     /* Deskripsi Program */
-    while (1){
-        if (strlen(tanggalTransaksi) > 0){
-            break; //tanggal valid
-        } else {
-            printf("Tanggal transaksi tidak boleh kosong. Masukkan ulang (DD/MM/YYYY): ");
-            scanf(" %[^\n]", tanggalTransaksi);
-        }
+    if (strlen(tanggalTransaksi) > 0){
+        return 1; // Valid
+    } else {
+        printf("Tanggal transaksi tidak boleh kosong.\n");
+        return 0; // Invalid
     }
 }
 
-void isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int jumlahPos){
-    /* Deklarasi Variabel */
+int isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int jumlahPos){
+    /* Deskripsi Program*/
     int i;
-    int posValid = 0;
-
-    /* Deskripsi Program */
-    while (1){
-        for (i = 0; i < jumlahPos; i++){
-            if (strcmp(posAnggaran, dataPos[i].namaPos) == 0){
-                posValid = 1;
-                break;
-            }
-        }
-        if (posValid){
-            break; //pos anggaran valid
-        } else {
-            printf("Pos anggaran tidak valid. Masukkan ulang: ");
-            scanf(" %[^\n]", posAnggaran);
+    // Loop cari nama pos di array
+    for (i = 0; i < jumlahPos; i++){
+        if (strcmp(posAnggaran, dataPos[i].namaPos) == 0){
+            return 1; // Ketemu & Valid
         }
     }
+    
+    printf("Pos anggaran '%s' tidak ditemukan. Cek daftar pos.\n", posAnggaran);
+    return 0; // Invalid
 }
 
 void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos){
-    /* Deklarasi Variabel*/
     Transaksi transaksiBaru;
-    int valid;
-
-    /* Deskripsi Program */
-    transaksiBaru.nominal = 0; //inisialisasi nominal
-    printf("Menambahkan Transaksi Baru:\n");
-    // Input data transaksi baru dari pengguna
-    do
-    {
-        printf("Masukkan tanggal transaksi (DD/MM/YYYY): ");
-        scanf("%s", transaksiBaru.tanggal);
-    } while (isTanggalTransaksiValid(transaksiBaru.tanggal), 0);
-    do
-    {
-        printf("Masukkan pos anggaran: ");
-        scanf(" %[^\n]", transaksiBaru.pos);
-    } while(isPosAnggaranTransaksiValid(transaksiBaru.pos, dataPos, jumlahPos), 0);
     
-    do
-    {
+    printf("\n--- Menambahkan Transaksi Baru ---\n");
+
+    // Input Tanggal (Loop sampai Valid)
+    do {
+        printf("Masukkan tanggal (DD/MM/YYYY): ");
+        scanf(" %[^\n]", transaksiBaru.tanggal);
+    } while (!isTanggalTransaksiValid(transaksiBaru.tanggal));
+
+    // Input Jenis (Loop sampai Valid)
+    do {
         printf("Masukkan jenis transaksi (Pemasukan/Pengeluaran): ");
         scanf(" %[^\n]", transaksiBaru.jenis);
-    } while (isJenisTransaksiValid(transaksiBaru.jenis), 0);
-    do
-    {
+    } while (!isJenisTransaksiValid(transaksiBaru.jenis));
+
+    // Cek apakah user menginput "Pemasukan" (Huruf besar/kecil)
+    int isMasuk = (strcmp(transaksiBaru.jenis, "Pemasukan") == 0 || strcmp(transaksiBaru.jenis, "pemasukan") == 0);
+
+    if (isMasuk) {
+        // Jika pemasukan, isi otomatis
+        strcpy(transaksiBaru.pos, "Pemasukan"); 
+        printf(">> Pos Anggaran otomatis diatur ke: 'Pemasukan'\n");
+    } else {
+        // Jika pengeluaran, user isi Pos Anggaran yang valid
+        do {
+            printf("Masukkan pos anggaran: ");
+            scanf(" %[^\n]", transaksiBaru.pos);
+        } while (!isPosAnggaranTransaksiValid(transaksiBaru.pos, dataPos, jumlahPos));
+    }
+
+    // Input Nominal (Loop sampai Valid)
+    do {
         printf("Masukkan nominal transaksi: ");
         scanf("%d", &transaksiBaru.nominal);
-    } while (isNominalTransaksiValid(&transaksiBaru.nominal), 0);
+    } while (!isNominalTransaksiValid(&transaksiBaru.nominal)); 
+
     printf("Masukkan deskripsi transaksi: ");
     scanf(" %[^\n]", transaksiBaru.deskripsi);
 
-    generateId(*jumlahTransaksi + 1, transaksiBaru.id); //menghasilkan ID unik untuk transaksi baru
-    // valid = validasiTransaksi(transaksiBaru, dataPos, jumlahPos); //memvalidasi data transaksi baru
-    //Jika data valid, tambahkan ke file dan array
-    if (1){ //ubah kembali ke valid jika fungsi validasi diaktifkan 
-        appendDataTransaksi(transaksiBaru);
-        dataTransaksi[*jumlahTransaksi] = transaksiBaru;
-        (*jumlahTransaksi)++;
-    }
+    generateId(*jumlahTransaksi, transaksiBaru.id);
+    
+    appendDataTransaksi(transaksiBaru);
+    dataTransaksi[*jumlahTransaksi] = transaksiBaru;
+    (*jumlahTransaksi)++;
+    
+    printf("\nTransaksi Berhasil Disimpan!\n");
 }

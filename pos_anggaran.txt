@@ -7,3 +7,5 @@ P005|Internet|300000
 P006|Skincare|250000
 P007|Transportasi|50000
 P008|Minuman|180000
+P009|Snack|50000
+P010|Movie|300000
