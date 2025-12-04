@@ -1,7 +1,8 @@
 int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi){
     int total = 0;
     for (int i = 0; i < jumlahTransaksi; i++) {
-        if (strcmp(dataTransaksi[i].jenis, "Pemasukan") == 0) {
+
+        if(strcmp(dataTransaksi[i].jenis, "Pemasukan") == 0 || strcmp(dataTransaksi[i].jenis, "pemasukan") == 0){
             total += dataTransaksi[i].nominal;
         }
     }

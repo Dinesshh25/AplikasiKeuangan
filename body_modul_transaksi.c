@@ -31,6 +31,12 @@ void loadDataTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi){
 void appendDataTransaksi(Transaksi transaksiBaru){ 
     /* Deskripsi Program */
     FILE *filetransaksi = fopen("data_transaksi.txt", "a"); //membuka file data_transaksi.txt untuk penambahan data
+    //Cek jika file tidak ada
+    if (filetransaksi == NULL)
+    {
+        printf("Gagal membuka file data_transaksi.txt untuk penambahan data.\n");
+        return;
+    }   
 
     //Menambahkan data transaksi baru ke file
     fprintf(filetransaksi, "%s|%s|%s|%s|%d|%s\n",
@@ -63,6 +69,7 @@ int validasiTransaksi(Transaksi transaksiBaru, PosAnggaran dataPos[], int jumlah
         printf("Jenis transaksi tidak valid. Harus 'Pemasukan' atau 'Pengeluaran'.\n");
         return 0;
     }
+
 
     // Validasi nominal
     if (transaksiBaru.nominal <= 0){
@@ -105,8 +112,10 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
     // Input data transaksi baru dari pengguna
     printf("Masukkan tanggal transaksi (DD/MM/YYYY): ");
     scanf("%s", transaksiBaru.tanggal);
+    printf("Huruf Pertama Harus Kapital !! ");
     printf("Masukkan pos anggaran: ");
     scanf(" %[^\n]", transaksiBaru.pos);
+    printf("Huruf Pertama Harus Kapital !! ");
     printf("Masukkan jenis transaksi (Pemasukan/Pengeluaran): ");
     scanf(" %[^\n]", transaksiBaru.jenis);
     printf("Masukkan nominal transaksi: ");
@@ -123,3 +132,19 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
         (*jumlahTransaksi)++;
     }
 }
+
+// int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi){
+//     /* Deklarasi Variabel*/
+//     int index;
+//     int count = 0;
+
+//     /* Deskripsi Program */
+//     //Menghitung jumlah transaksi berdasarkan nama pos atau jenis transaksi pemasukan/pengeluaran
+//     for (index = 0; index < jumlahTransaksi; index++){
+//         if (strcmp(dataTransaksi[index].pos, kriteria) == 0 || strcmp(dataTransaksi[index].jenis, kriteria) == 0){
+//             count++;
+//         }
+//     }
+
+//     return count;
+// }

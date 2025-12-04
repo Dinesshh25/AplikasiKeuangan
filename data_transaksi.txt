@@ -1,0 +1,13 @@
+T001|23/12/2022|Tugas|Pemasukan|22000|qwer
+T002|11/22/2011|Tugas|Pengeluaran|120000|ini tugas
+T003|12/12/2022|Skincare|Pengeluaran|50000|sunscreen
+T004|12/12/2022|Transportasi|Pengeluaran|20000|lala
+T005|12/11/2025|Skincare|Pemasukan|50000|hahah
+T006|11/11/2025|Hiburan|Pengeluaran|20000|dauhduha
+T007|30/12/2021|Minuman|Pemasukan|180000|top up
+T008|31/12/2021|Minuman|Pengeluaran|30000|kopi
+T009|01/01/2022|Minuman|Pemasukan|20000|topup
+T010|12/12/2022|Minuman|Pengeluaran|1000|tes
+T011|20/11/2025|Minuman|Pengeluaran|15000|Pembelian Es Teh depan Rumah 
+T012|11/10/2024|Tugas|Pengeluaran|23000|ahhaha
+T013|12/11/2011|Lainnya|Pengeluaran|12000|howboub

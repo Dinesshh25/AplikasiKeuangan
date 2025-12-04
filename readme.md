@@ -21,6 +21,7 @@ Proyek terdiri dari enam file utama, masing-masing memiliki tanggung jawab terse
     - tampilLaporanPos()
     - tampilRekapitulasi()
     - tampilDaftarTransaksi()
+    - tampilSubMenuDaftarTransaksi()
 3. body_modul_pos.c
     Berisi seluruh modul untuk pos.
     Berisi:

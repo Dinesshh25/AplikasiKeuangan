@@ -57,6 +57,7 @@ void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char*
     }
     printf("ID\tTanggal\t\tPos Anggaran\tJenis\t\tNominal\t\tDeskripsi\n");
     printf("-----------------------------------------------------------------------------------------\n");
+
     // menampilkan transaksi sesuai filter
     for(index = 0; index < jumlahTransaksi; index++) {
         

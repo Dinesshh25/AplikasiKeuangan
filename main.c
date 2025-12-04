@@ -35,9 +35,9 @@ typedef struct {
 
 
 
-/* ========================================
+/* 
    HEADER MODUL APLIKASI KEUANGAN
-   ======================================== */
+ */
 
 /* ========================================
    MODUL TAMPILAN
@@ -57,10 +57,11 @@ int pilihMenu();
 */
 
 void tampilSubMenuTransaksi();
-/* Procedure bertujuan untuk menampilkan submenu transaksi aplikasi keuangan mahasiswa ke layar
-   I.S. : Menu utama ditampilkan dan pengguna memilih menu transaksi
-   F.S. : Submenu transaksi ditampilkan ke layar
-          (1. tambah pemasukan, 2. tambah pengeluaran, 0. kembali)
+/*
+    Procedure bertujuan untuk menampilkan submenu transaksi aplikasi keuangan mahasiswa ke layar.
+    I. S. : Menu utama ditampilkan, dan pengguna memilih menu transaksi
+    F. S. : Submenu transaksi aplikasi keuangan mahasiswa ditampilkan ke layar.
+            (1. tambah pemasukan, 2. tambah pengeluaran, 3. lihat daftar transaksi, 0. kembali)  
 */
 
 void tampilSubMenuPos();
@@ -74,21 +75,116 @@ void tampilSubMenuPos();
    MODUL TRANSAKSI
    ======================================== */
 
+void tampilSubMenuPos();
+/* Procedure bertujuan untuk menampilkan submenu pos anggaran ke layar
+   I.S. : Menu utama ditampilkan dan pengguna memilih menu pos anggaran
+   F.S. : Submenu pos anggaran ditampilkan ke layar
+          (1. Tambah Pos Anggaran, 2. Tampilkan Daftar Pos, 0. Kembali)
+*/
+
+/* ========================================
+   MODUL TRANSAKSI
+   ======================================== */
+
 void loadDataTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi);
-/* Procedure bertujuan untuk memuat data transaksi dari file ke dalam array
-   I.S. : Array dataTransaksi kosong, jumlahTransaksi = 0
-   F.S. : Jika file data_transaksi.txt ada, data dimuat ke array dan jumlahTransaksi diperbarui
-          Jika file tidak ada, dimulai dengan data kosong
+/*
+    Procedure bertujuan untuk memuat data transaksi dari file data_transaksi ke dalam array dataTransaksi.
+    I. S. : dataTransaksi kosong, jumlahTransaksi = 0.
+    F. S. : dataTransaksi terisi, jumlahTransaksi diperbarui.
+*/
+
+void appendDataTransaksi(Transaksi transaksiBaru);
+/*
+    Procedure bertujuan untuk menambahkan data transaksi baru ke dalam file data_transaksi.
+    I. S. : Data transaksi baru telah divalidasi dan siap untuk disimpan, file data_transaksi memiliki N baris.
+    F. S. : Data transaksi baru ditambahkan ke dalam file data_transaksi sebagai baris ke N+1.
+*/
+
+void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
+/*
+    Procedure bertujuan untuk menambahkan data transaksi ke dalam array dataTransaksi.
+    I. S. : Pengguna memilih untuk menambah transaksi
+    F. S. : dataTransaksi dan jumlahTransaksi bertambah 1 jika data valid dan data ditambahkan ke dalam file data_transaksi.
+*/
+
+void isJenisTransaksiValid(char *jenisTransaksi);
+/*
+    Procedure bertujuan untuk memvalidasi jenis transaksi yang dimasukkan oleh pengguna.
+    I. S. : jenisTransaksi (string yang berisi jenis transaksi yang dimasukkan oleh pengguna)
+    F. S. : Jika jenis transaksi valid (Pemasukan atau Pengeluaran), prosedur selesai tanpa output.
+            Jika jenis transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+*/
+
+void isNominalTransaksiValid(int *nominalTransaksi);
+/*
+    Procedure bertujuan untuk memvalidasi nominal transaksi yang dimasukkan oleh pengguna.
+    I. S. : nominalTransaksi (pointer ke integer yang berisi nominal transaksi yang dimasukkan oleh pengguna)
+    F. S. : Jika nominal transaksi valid (lebih dari 0), prosedur selesai tanpa output.
+            Jika nominal transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+*/
+
+void isTanggalTransaksiValid(char *tanggalTransaksi);
+/*
+    Procedure bertujuan untuk memvalidasi tanggal transaksi yang dimasukkan oleh pengguna.
+    I. S. : tanggalTransaksi (string yang berisi tanggal transaksi yang dimasukkan oleh pengguna)
+    F. S. : Jika tanggal transaksi valid (tidak kosong), prosedur selesai tanpa output.
+            Jika tanggal transaksi tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+*/
+
+void isPosAnggaranTransaksiValid(char *posAnggaran, PosAnggaran dataPos[], int jumlahPos);
+/*
+    Procedure bertujuan untuk memvalidasi pos anggaran transaksi yang dimasukkan oleh pengguna.
+    I. S. : posAnggaran (string yang berisi pos anggaran yang dimasukkan oleh pengguna), dataPos (array data pos anggaran), jumlahPos (jumlah pos anggaran)
+    F. S. : Jika pos anggaran valid (ada dalam dataPos), prosedur selesai tanpa output.
+            Jika pos anggaran tidak valid, menampilkan pesan kesalahan dan meminta input ulang hingga valid.
+*/
+
+
+void generateId(int jumlahTransaksi, char *bufferId);
+/*
+    Procedure bertujuan untuk menghasilkan ID unik untuk setiap transaksi berdasarkan jumlah transaksi yang ada.
+    Input : jumlahTransaksi (jumlah transaksi yang ada)
+    Output : bufferId (ID unik yang dihasilkan disimpan dalam bufferId)
+*/
+
+
+void tampilSubMenuDaftarTransaksi();
+/*
+    Procedure bertujuan untuk menampilkan submenu daftar transaksi aplikasi keuangan mahasiswa ke layar.
+    I. S. : Submenu transaksi ditampilkan, dan pengguna memilih untuk melihat daftar transaksi
+    F. S. : Submenu daftar transaksi aplikasi keuangan mahasiswa ditampilkan ke layar.
+            (1. semua, 2. pemasukan, 3. pengeluaran, 0. kembali)  
 */
 
 void tampilDaftarTransaksi(Transaksi dataTransaksi[], int jumlahTransaksi, char filter[]);
 /*
     Procedure bertujuan untuk menampilkan daftar transaksi ke layar dengan opsi filter.
-    I. S. : Data transaksi sudah ada
+    I. S. : Data transaksi sudah ada, filter diberikan ("semua", "pemasukan", atau "pengeluaran")
     F. S. : Daftar transaksi ditampilkan ke layar sesuai dengan filter yang diberikan.
             Jika filter "semua", tampilkan semua transaksi.
             Jika filter "pemasukan", tampilkan hanya transaksi pemasukan.
             Jika filter "pengeluaran", tampilkan hanya transaksi pengeluaran.
+*/
+
+void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAnggaran dataPos[], int jumlahPos);
+/*
+    Procedure bertujuan untuk menampilkan laporan keuangan lengkap mulai dari rekapitulasi, pos anggaran, hingga kesimpulan kondisi keuangan.
+    I. S. : Data transaksi dan pos sudah ada, pengguna memilih menu laporan keuangan di menu utama.
+    F. S. : Laporan keuangan ditampilkan ke layar, termasuk total pemasukan, total pengeluaran, saldo akhir, rata-rata pengeluaran, data pos anggaran, status keuangan, dan kondisi keuangan.
+*/
+
+void tampilLaporanPos(PosAnggaran dataPos[], int jumlahPos, Transaksi dataTransaksi[], int jumlahTransaksi);
+/*
+    Procedure bertujuan untuk menampilkan tabel laporan pos anggaran beserta realisasi pengeluaran pada tampilan laporan keuangan.
+    I. S. : Data pos anggaran dan data transaksi sudah ada, pengguna memilih untuk melihat laporan keuangan di menu utama.
+    F. S. : Laporan pos anggaran ditampilkan ke layar, termasuk nama pos, batas nominal, realisasi, sisa anggaran, jumlah transaksi, dan status.
+*/
+
+void tampilRekapitulasi(int totalPemasukan, int totalPengeluaran, int saldoAkhir, int avgPengeluaran);
+/*
+    Procedure bertujuan untuk menampilkan rekapitulasi keuangan termasuk total pemasukan, total pengeluaran, saldo akhir, dan rata-rata pengeluaran pada bagian atas tampilan laporan keuangan.
+    I. S. : Data rekapitulasi sudah dihitung, pengguna memilih untuk melihat laporan keuangan di menu utama.
+    F. S. : Rekapitulasi keuangan ditampilkan ke layar termasuk jumlah transaksi pemasukan dan pengeluaran. 
 */
 
 void appendDataTransaksi(Transaksi transaksiBaru);
@@ -128,6 +224,38 @@ void loadDataPos(PosAnggaran dataPos[], int *jumlahPos);
           Jika file tidak ada, dimulai dengan data kosong
 */
 
+
+int validasiPosAnggaran(PosAnggaran dataPos[], int jumlahPos, char namaPos[], int nominal);
+/* Function bertujuan untuk memvalidasi apakah pengeluaran melebihi batas anggaran
+   I. S. : Data pos anggaran sudah ada, kategori dan nominal pengeluaran diketahui
+   F. S. : Return 1 jika melebihi batas, return 0 jika masih dalam batas
+           Menampilkan peringatan jika melebihi batas 
+*/
+
+void generateId(int jumlahTransaksi, char *bufferId);
+/* Procedure bertujuan untuk menghasilkan ID unik untuk transaksi baru
+   I.S. : Jumlah transaksi saat ini diketahui
+   F.S. : ID unik dengan format TXXX dihasilkan dan disimpan ke bufferId
+*/
+
+int validasiTransaksi(Transaksi transaksiBaru, PosAnggaran dataPos[], int jumlahPos);
+/* Function bertujuan untuk memvalidasi data transaksi yang akan ditambahkan
+   Input  : transaksiBaru (data transaksi baru), dataPos (array pos anggaran), jumlahPos (jumlah pos)
+   Output : 1 jika data valid (jenis Pemasukan/Pengeluaran, nominal > 0, tanggal tidak kosong, 
+            ID pos valid untuk pengeluaran), 0 jika tidak valid dengan pesan error
+*/
+
+/* ========================================
+   MODUL POS ANGGARAN
+   ======================================== */
+
+void loadDataPos(PosAnggaran dataPos[], int *jumlahPos);
+/* Procedure bertujuan untuk memuat data pos anggaran dari file ke dalam array
+   I.S. : Array dataPos kosong, jumlahPos = 0
+   F.S. : Jika file pos_anggaran.txt ada, data dimuat ke array dan jumlahPos diperbarui
+          Jika file tidak ada, dimulai dengan data kosong
+*/
+
 void appendDataPos(PosAnggaran dataPos[], int *jumlahPos);
 /* Procedure bertujuan untuk menambahkan pos anggaran baru
    I.S. : Array pos anggaran sudah dideklarasikan
@@ -137,10 +265,12 @@ void appendDataPos(PosAnggaran dataPos[], int *jumlahPos);
 
 void tampilDaftarPos(PosAnggaran dataPos[], int jumlahPos);
 /* Procedure bertujuan untuk menampilkan daftar semua pos anggaran ke layar
-   I.S. : Data pos anggaran sudah ada
-   F.S. : Daftar pos anggaran ditampilkan ke layar dengan informasi:
-          No, ID, Nama Pos, Batas Nominal (Rp)
-*/
+   I. S. : Data pos anggaran sudah ada
+   F. S. : Daftar pos anggaran ditampilkan ke layar dengan informasi:
+           - ID
+           - Nama Pos
+           - Batas Nominal (Rp)
+*/ 
 
 void generateIDPos(char idBaru[], PosAnggaran dataPos[], int jumlahPos);
 /* Procedure bertujuan untuk menghasilkan ID unik untuk pos anggaran baru
@@ -175,6 +305,12 @@ void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAn
           - Tabel Pos Anggaran (Batas, Realisasi, Sisa, Jumlah Transaksi, Status)
           - Kondisi Keuangan (Defisit/Seimbang/Surplus)
           - Kesimpulan
+*/
+int hitungJumlahTransaksi(char kriteria[], Transaksi dataTransaksi[], int jumlahTransaksi);
+/*
+    Function bertujuan untuk menghitung jumlah transaksi (berapa kali transaksi) berdasarkan nama pos atau jenis pemasukan/pengeluaran.
+    Input : kriteria (nama pos anggaran atau jenis transaksi), dataTransaksi (array data transaksi), jumlahTransaksi (jumlah transaksi yang ada)
+    Output : Mengembalikan jumlah transaksi yang sesuai dengan nama pos atau jenisnya.1
 */
 
 int hitungTotalPemasukan(Transaksi dataTransaksi[], int jumlahTransaksi);
