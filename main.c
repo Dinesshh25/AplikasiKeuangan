@@ -360,7 +360,7 @@ void tampilTabelPosAnggaran(PosAnggaran dataPos[], int jumlahPos, int jumlahTran
           Pos, Batas, Realisasi, Sisa, Jumlah Transaksi, Status
 */
 
-void kondisiKeuangan(int saldoAkhir);
+void kondisiKeuangan(int saldoAkhir, int totalPemasukan);
 /* Procedure bertujuan untuk menampilkan kondisi keuangan ke layar
    I.S. : Saldo akhir sudah dihitung
    F.S. : Kondisi keuangan ditampilkan (Defisit/Seimbang/Surplus)

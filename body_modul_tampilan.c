@@ -6,7 +6,7 @@ void tampilMenu() {
     printf("  1. Tambah Pos Anggaran\n");
     printf("  2. Tambah Transaksi\n");
     printf("  3. Lihat Laporan Keuangan\n");
-    printf("  0. Kembali ke Menu Utama\n");
+    printf("  0. Keluar Aplikasi\n");
     printf("_______________________________________________________________\n");
 }
 
@@ -149,15 +149,30 @@ void tampilTabelPosAnggaran(PosAnggaran dataPos[], int jumlahPos, int jumlahTran
     printf("----------------------------------------------------------------------\n\n");
 }
 
-void kondisiKeuangan(int saldoAkhir) {
-    printf("Kondisi Keuangan : ");
-    if (saldoAkhir < 0)
-        printf("Defisit (Pengeluaran lebih besar dari total pemasukan)\n");
-    else if (saldoAkhir == 0)
-        printf("Seimbang (Tanpa sisa uang)\n");
-    else
-        printf("Surplus (Masih memiliki sisa uang)\n");
-}
+void kondisiKeuangan(int saldoAkhir, int totalPemasukan) {
+printf("Kondisi Keuangan : ");
+    
+    // Hitung persentase, hanya jika totalPemasukan > 0 untuk menghindari pembagian dengan nol
+    if (totalPemasukan > 0) {
+        float persentase = ((float)saldoAkhir / totalPemasukan) * 100;
+
+        // Tampilkan persentase pembulatan dua angka di belakang koma
+        if (saldoAkhir < 0) {
+            printf("Defisit (sisa  %0.2f%% dari Pemasukan )\n", persentase);
+        } else if (saldoAkhir == 0) {
+            printf("Seimbang (sisa %0.2f%% dari Pemasukan)  \n", persentase);
+        } else {
+            printf("Surplus (sisa %0.2f%% dari Pemasukan) \n", persentase);
+        }
+    } else {
+        // Kasus jika total pemasukan adalah 0 (pemasukan tidak ada)
+        if (saldoAkhir < 0) {
+             printf("Defisit (Pemasukan nol, tetapi ada pengeluaran)\n");
+        } else {
+             printf("Seimbang (Pemasukan nol, pengeluaran nol)\n");
+        }
+    }
+}   
 
 void kesimpulanKeuangan(PosAnggaran dataPos[], int totalPemasukan, int totalPengeluaran) {
     float persentase = ((float)(totalPemasukan - totalPengeluaran) / totalPemasukan) * 100;
@@ -210,7 +225,7 @@ void tampilLaporanKeuangan(Transaksi dataTransaksi[], int jumlahTransaksi, PosAn
     tampilTabelPosAnggaran(dataPos, jumlahPos, jumlahTransaksiPerPos);
     
     // Kondisi dan Kesimpulan
-    kondisiKeuangan(saldoAkhir);
+    kondisiKeuangan(saldoAkhir, totalPemasukan);
     kesimpulanKeuangan(dataPos, totalPemasukan, totalPengeluaran);
     
     printf("\n======================================================================\n");

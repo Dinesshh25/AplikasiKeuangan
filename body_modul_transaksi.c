@@ -125,8 +125,10 @@ void tambahTransaksi(Transaksi dataTransaksi[], int *jumlahTransaksi, PosAnggara
     if (isMasuk) {
         // Jika pemasukan, isi otomatis
         strcpy(transaksiBaru.pos, "Pemasukan"); 
+        strcpy(transaksiBaru.jenis, "Pemasukan"); 
         printf(">> Pos Anggaran otomatis diatur ke: 'Pemasukan'\n");
     } else {
+        strcpy(transaksiBaru.jenis, "Pengeluaran"); 
         // Jika pengeluaran, user isi Pos Anggaran yang valid
         do {
             printf("Masukkan pos anggaran: ");

@@ -1,11 +1,7 @@
 ID|Pos|Batas Nominal (Rp)
-P001|Makanan|200000
-P002|Hiburan|1000000
-P003|Lainnya|500000
-P004|Tugas|150000
-P005|Internet|300000
-P006|Skincare|250000
-P007|Transportasi|50000
-P008|Minuman|180000
-P009|Snack|50000
-P010|Movie|300000
+P001|Makan|300000
+P002|Transportasi|150000
+P003|Hiburan|100000
+P004|Tugas|100000
+P005|Lainnya|50000
+P006|Minuman|20000

@@ -184,5 +184,4 @@ void loadDataPos(PosAnggaran dataPos[], int *jumlahPos) {
     }
     
     fclose(file);
-    printf(" Berhasil memuat %d pos anggaran dari file.\n", *jumlahPos);
 }
